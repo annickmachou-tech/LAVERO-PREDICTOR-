@@ -988,4 +988,91 @@
 
     function evaluatePlayerBet(actualOutcome) {
       const banner = document.getElementById('betOutcomeBanner');
-      
+      if (!state.currentBet) {
+        banner.classList.add('hidden');
+        return;
+      }
+      state.stats.totalBets++;
+      banner.classList.remove('hidden', 'bg-emerald-500/20', 'text-emerald-300', 'border-emerald-400/50', 'bg-rose-500/20', 'text-rose-300', 'border-rose-400/50');
+
+      if (state.currentBet === actualOutcome) {
+        const bonus = actualOutcome === 'draw' ? 150 : 100;
+        state.stats.points += bonus;
+        state.stats.streak++;
+        state.stats.wonBets++;
+        banner.textContent = `🎯 PRONOSTIC GAGNÉ ! +${bonus} PTS`;
+        banner.classList.add('bg-emerald-500/20', 'text-emerald-300', 'border', 'border-emerald-400/50');
+      } else {
+        state.stats.streak = 0;
+        banner.textContent = `❌ PRONOSTIC MANQUÉ`;
+        banner.classList.add('bg-rose-500/20', 'text-rose-300', 'border', 'border-rose-400/50');
+      }
+
+      document.getElementById('playerPoints').textContent = state.stats.points;
+      document.getElementById('playerStreak').textContent = `${state.stats.streak} 🔥`;
+      document.getElementById('playerAccuracy').textContent = `${Math.round((state.stats.wonBets / state.stats.totalBets) * 100)}%`;
+      state.currentBet = null;
+      updateBetButtonsUI();
+    }
+
+    function triggerVictoryConfetti(color1, color2) {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 75, spread: 70, origin: { y: 0.6 }, colors: [color1, color2, '#00f0ff', '#fbbf24'] });
+      }
+    }
+
+    function addToHistory(c1, s1, c2, s2, outcome, stats) {
+      state.history.unshift({ c1, s1, c2, s2, outcome, stats });
+      if (state.history.length > 9) state.history.pop();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('matchHistoryContainer');
+      if (state.history.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-8 text-sm text-slate-500 border border-dashed border-white/10 rounded-2xl">Aucun duel disputé pour le moment.</div>`;
+        return;
+      }
+      container.innerHTML = state.history.map(item => `
+        <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-3.5 space-y-2 hover:border-cyan-400/30 transition">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              ${getClubBadgeSVG(item.c1, 'w-8 h-8')}
+              <span class="text-xs font-bold truncate ${item.outcome === 'home' ? 'text-cyan-300' : 'text-slate-300'}">${item.c1.name}</span>
+            </div>
+            <div class="px-2.5 py-1 rounded-xl bg-slate-950 border border-white/10 font-display text-lg font-bold text-white whitespace-nowrap">${item.s1} - ${item.s2}</div>
+            <div class="flex items-center justify-end gap-2 min-w-0 flex-1">
+              <span class="text-xs font-bold truncate text-right ${item.outcome === 'away' ? 'text-purple-300' : 'text-slate-300'}">${item.c2.name}</span>
+              ${getClubBadgeSVG(item.c2, 'w-8 h-8')}
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1.5 border-t border-white/5">
+            <span>🎯 Tirs cadrés : <strong class="text-slate-200">${item.stats.shots1} - ${item.stats.shots2}</strong></span>
+            <span>🚩 Corners : <strong class="text-slate-200">${item.stats.corners1} - ${item.stats.corners2}</strong></span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function clearHistory() {
+      state.history = [];
+      renderHistory();
+      showToast('Historique effacé', '🗑️');
+    }
+
+    let toastTimeout;
+    function showToast(message, icon = '⚽') {
+      const toast = document.getElementById('toastMessage');
+      document.getElementById('toastText').textContent = message;
+      document.getElementById('toastIcon').textContent = icon;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 2600);
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+
+  <!-- Coller ici ton script Adsterra si besoin avant </body> -->
+</body>
+</html>
