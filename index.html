@@ -552,3 +552,440 @@
         currentDuelKey = newKey;
         state.launchesUsedForCurrentDuel = 0;
       }
+  const remaining = Math.max(0, MAX_LAUNCHES_PER_DUEL - state.launchesUsedForCurrentDuel);
+      const badge = document.getElementById('duelAttemptsBadge');
+      const launchBtn = document.getElementById('launchDuelBtn');
+      const nextDuelBtn = document.getElementById('nextDuelBtn');
+
+      badge.textContent = `${remaining}/${MAX_LAUNCHES_PER_DUEL} lancements restants`;
+
+      if (remaining === 0 && !state.isSimulating) {
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-400/40';
+        launchBtn.disabled = true;
+        launchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        launchBtn.innerHTML = '<span>🔒 LIMITE ATTEINTE (2/2)</span>';
+        nextDuelBtn.classList.remove('hidden');
+      } else if (!state.isSimulating) {
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-400/30';
+        launchBtn.disabled = false;
+        launchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        launchBtn.innerHTML = state.launchesUsedForCurrentDuel === 0
+          ? '<span>⚡ LANCER LE DUEL (3s)</span>'
+          : '<span>⚡ DERNIER LANCEMENT (2/2)</span>';
+        nextDuelBtn.classList.add('hidden');
+      }
+    }
+
+    function playSound(type) {
+      if (!state.soundEnabled || typeof Tone === 'undefined') return;
+      try {
+        if (Tone.context.state !== 'running') Tone.start();
+        const synth = new Tone.Synth({
+          oscillator: { type: 'triangle' },
+          envelope: { attack: 0.01, decay: 0.15, sustain: 0.05, release: 0.2 }
+        }).toDestination();
+        if (type === 'tick') synth.triggerAttackRelease('C5', '16n');
+        else if (type === 'tickFinal') synth.triggerAttackRelease('G5', '8n');
+        else if (type === 'whistle') {
+          const poly = new Tone.PolySynth(Tone.Synth).toDestination();
+          poly.volume.value = -6;
+          poly.triggerAttackRelease(['C5', 'E5', 'G5', 'C6'], '4n');
+        } else if (type === 'select') {
+          synth.volume.value = -12;
+          synth.triggerAttackRelease('E4', '32n');
+        }
+      } catch (e) {}
+    }
+
+    function toggleSound() {
+      state.soundEnabled = !state.soundEnabled;
+      document.getElementById('soundIconOn').classList.toggle('hidden', !state.soundEnabled);
+      document.getElementById('soundIconOff').classList.toggle('hidden', state.soundEnabled);
+      showToast(state.soundEnabled ? 'Effets sonores activés 🔊' : 'Effets sonores coupés 🔇', '🔊');
+    }
+
+    function getClubBadgeSVG(club, sizeClass = 'w-14 h-14') {
+      const textColor = club.textDark ? '#0f172a' : '#ffffff';
+      const strokeColor = club.textDark ? 'rgba(15,23,42,0.25)' : 'rgba(255,255,255,0.35)';
+      const gradId = `grad_${club.id}_${Math.floor(Math.random() * 10000)}`;
+      return `
+        <svg class="${sizeClass} drop-shadow-md flex-shrink-0" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="${gradId}" x1="0" y1="0" x2="100" y2="110" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="${club.c1}"/>
+              <stop offset="100%" stop-color="${club.c2}"/>
+            </linearGradient>
+          </defs>
+          <path d="M50 5 L90 20 V55 C90 82 50 105 50 105 C50 105 10 82 10 55 V20 L50 5 Z"
+                fill="url(#${gradId})" stroke="${strokeColor}" stroke-width="4"/>
+          <path d="M22 25 L78 80" stroke="${strokeColor}" stroke-width="8" stroke-linecap="round"/>
+          <text x="50" y="62" text-anchor="middle" fill="${textColor}"
+                font-family="Teko, sans-serif" font-weight="700" font-size="28" letter-spacing="1">
+            ${club.short}
+          </text>
+        </svg>
+      `;
+    }
+
+    function initApp() {
+      const leagues = ['Toutes les ligues', ...new Set(CLUBS_DB.map(c => c.league))];
+      ['leagueFilter1', 'leagueFilter2'].forEach(selectId => {
+        const select = document.getElementById(selectId);
+        select.innerHTML = leagues.map(l => `<option value="${l}">${l}</option>`).join('');
+      });
+      renderClubList(1);
+      renderClubList(2);
+      updateMatchupUI();
+      syncDuelLimitUI();
+    }
+
+    function renderClubList(slot) {
+      const searchVal = document.getElementById(`search${slot}`).value.toLowerCase().trim();
+      const leagueVal = document.getElementById(`leagueFilter${slot}`).value;
+      const listContainer = document.getElementById(`clubList${slot}`);
+      const selectedClub = slot === 1 ? state.club1 : state.club2;
+
+      const filtered = CLUBS_DB.filter(club => {
+        const matchSearch = club.name.toLowerCase().includes(searchVal) ||
+                            club.country.toLowerCase().includes(searchVal) ||
+                            club.short.toLowerCase().includes(searchVal);
+        const matchLeague = leagueVal === 'Toutes les ligues' || club.league === leagueVal;
+        return matchSearch && matchLeague;
+      });
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Aucun club trouvé.</p>`;
+        return;
+      }
+
+      listContainer.innerHTML = filtered.map(club => {
+        const isSelected = selectedClub.id === club.id;
+        const activeClasses = isSelected
+          ? (slot === 1 ? 'bg-cyan-500/20 border-cyan-400 text-white' : 'bg-purple-500/20 border-purple-400 text-white')
+          : 'bg-slate-900/60 border-white/5 hover:bg-white/10 text-slate-200';
+
+        return `
+          <button type="button" onclick="selectClub(${slot}, '${club.id}')"
+            class="w-full flex items-center justify-between p-2 rounded-xl border ${activeClasses} transition text-left group">
+            <div class="flex items-center gap-2.5 min-w-0">
+              ${getClubBadgeSVG(club, 'w-8 h-8')}
+              <div class="truncate">
+                <div class="text-xs sm:text-sm font-bold truncate group-hover:text-cyan-300 transition">
+                  ${club.flag} ${club.name}
+                </div>
+                <div class="text-[10px] text-slate-400 truncate">${club.country} • ${club.league}</div>
+              </div>
+            </div>
+            <span class="ml-2 px-2 py-0.5 rounded-lg text-xs font-display font-bold bg-slate-950/90 border border-white/10 text-amber-400">
+              ${club.ovr} OVR
+            </span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectClub(slot, clubId) {
+      if (state.isSimulating) return;
+      const club = CLUBS_DB.find(c => c.id === clubId);
+      if (!club) return;
+      if (slot === 1) state.club1 = club;
+      else state.club2 = club;
+      playSound('select');
+      resetCenterToReady();
+      renderClubList(slot);
+      updateMatchupUI();
+      syncDuelLimitUI();
+    }
+
+    function pickRandomClub(slot) {
+      if (state.isSimulating) return;
+      const otherClub = slot === 1 ? state.club2 : state.club1;
+      const candidates = CLUBS_DB.filter(c => c.id !== otherClub.id);
+      const randomClub = candidates[Math.floor(Math.random() * candidates.length)];
+      selectClub(slot, randomClub.id);
+    }
+
+    function randomizeBoth() {
+      if (state.isSimulating) return;
+      const idx1 = Math.floor(Math.random() * CLUBS_DB.length);
+      let idx2 = Math.floor(Math.random() * CLUBS_DB.length);
+      while (idx2 === idx1) idx2 = Math.floor(Math.random() * CLUBS_DB.length);
+      state.club1 = CLUBS_DB[idx1];
+      state.club2 = CLUBS_DB[idx2];
+      playSound('select');
+      resetCenterToReady();
+      renderClubList(1);
+      renderClubList(2);
+      updateMatchupUI();
+      syncDuelLimitUI();
+      showToast(`Nouveau duel : ${state.club1.name} vs ${state.club2.name} !`, '🎲');
+    }
+
+    function setQuickMatch(name1, name2) {
+      if (state.isSimulating) return;
+      const c1 = CLUBS_DB.find(c => c.name === name1);
+      const c2 = CLUBS_DB.find(c => c.name === name2);
+      if (c1 && c2) {
+        state.club1 = c1;
+        state.club2 = c2;
+        playSound('select');
+        resetCenterToReady();
+        renderClubList(1);
+        renderClubList(2);
+        updateMatchupUI();
+        syncDuelLimitUI();
+      }
+    }
+
+    function renderSelectedClubCard(slot, club) {
+      const container = document.getElementById(slot === 1 ? 'homeSelectedDisplay' : 'awaySelectedDisplay');
+      container.style.background = `linear-gradient(135deg, ${club.c1}33 0%, rgba(15, 23, 42, 0.95) 65%, ${club.c2}33 100%)`;
+      container.innerHTML = `
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            ${getClubBadgeSVG(club, 'w-16 h-16 sm:w-20 sm:h-20')}
+            <span class="absolute -bottom-1 -right-1 px-2 py-0.5 rounded-md bg-slate-950 border border-amber-400/50 font-display text-sm font-bold text-amber-400 shadow">
+              ${club.ovr}
+            </span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-300">
+              <span>${club.flag}</span>
+              <span class="truncate">${club.country} • ${club.league}</span>
+            </div>
+            <h2 class="font-display text-2xl sm:text-3xl font-bold uppercase tracking-wide text-white truncate mt-0.5">
+              ${club.name}
+            </h2>
+            <div class="flex flex-wrap gap-1 mt-1.5">
+              ${club.stars.slice(0, 4).map(star => `
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-slate-200 font-medium">
+                  ⭐ ${star}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateMatchupUI() {
+      const c1 = state.club1;
+      const c2 = state.club2;
+      renderSelectedClubCard(1, c1);
+      renderSelectedClubCard(2, c2);
+      document.getElementById('betHomeLabel').textContent = c1.short;
+      document.getElementById('betAwayLabel').textContent = c2.short;
+      document.getElementById('miniBadge1').innerHTML = getClubBadgeSVG(c1, 'w-16 h-16');
+      document.getElementById('miniBadge2').innerHTML = getClubBadgeSVG(c2, 'w-16 h-16');
+      document.getElementById('matchupTitle').textContent = `${c1.name} vs ${c2.name}`;
+
+      const diff = c1.ovr - c2.ovr;
+      let oddsText = 'Duel très équilibré • Tout peut arriver !';
+      if (diff >= 5) oddsText = `Avantage ${c1.name} (${c1.ovr} OVR vs ${c2.ovr} OVR)`;
+      else if (diff <= -5) oddsText = `Avantage ${c2.name} (${c2.ovr} OVR vs ${c1.ovr} OVR)`;
+      document.getElementById('oddsIndicator').textContent = oddsText;
+
+      document.getElementById('homeCardWrapper').classList.remove('fut-card-winner');
+      document.getElementById('awayCardWrapper').classList.remove('fut-card-winner');
+    }
+
+    function selectBet(choice) {
+      if (state.isSimulating) return;
+      state.currentBet = state.currentBet === choice ? null : choice;
+      playSound('select');
+      updateBetButtonsUI();
+    }
+
+    function updateBetButtonsUI() {
+      const btns = {
+        home: document.getElementById('betHomeBtn'),
+        draw: document.getElementById('betDrawBtn'),
+        away: document.getElementById('betAwayBtn')
+      };
+      Object.keys(btns).forEach(key => {
+        btns[key].classList.remove('ring-2', 'ring-cyan-400', 'bg-cyan-500/20', 'ring-amber-400', 'bg-amber-500/20', 'ring-purple-400', 'bg-purple-500/20');
+      });
+      if (state.currentBet === 'home') btns.home.classList.add('ring-2', 'ring-cyan-400', 'bg-cyan-500/20');
+      else if (state.currentBet === 'draw') btns.draw.classList.add('ring-2', 'ring-amber-400', 'bg-amber-500/20');
+      else if (state.currentBet === 'away') btns.away.classList.add('ring-2', 'ring-purple-400', 'bg-purple-500/20');
+    }
+
+    function resetCenterToReady() {
+      document.getElementById('stateReady').classList.remove('hidden');
+      document.getElementById('stateCountdown').classList.add('hidden');
+      document.getElementById('stateResult').classList.add('hidden');
+    }
+
+    function startDuel() {
+      if (state.isSimulating) return;
+
+      syncDuelLimitUI();
+      if (state.launchesUsedForCurrentDuel >= MAX_LAUNCHES_PER_DUEL) {
+        showToast('Limite atteinte : 2 lancements max par duel !', '🔒');
+        return;
+      }
+
+      state.launchesUsedForCurrentDuel++;
+      state.isSimulating = true;
+
+      const c1 = state.club1;
+      const c2 = state.club2;
+
+      document.getElementById('homeCardWrapper').classList.remove('fut-card-winner');
+      document.getElementById('awayCardWrapper').classList.remove('fut-card-winner');
+      document.getElementById('stateReady').classList.add('hidden');
+      document.getElementById('stateResult').classList.add('hidden');
+      document.getElementById('stateCountdown').classList.remove('hidden');
+
+      document.getElementById('clashBadge1').innerHTML = getClubBadgeSVG(c1, 'w-14 h-14');
+      document.getElementById('clashBadge2').innerHTML = getClubBadgeSVG(c2, 'w-14 h-14');
+
+      const launchBtn = document.getElementById('launchDuelBtn');
+      launchBtn.disabled = true;
+      launchBtn.classList.add('opacity-60', 'cursor-not-allowed');
+      launchBtn.innerHTML = '<span>⏳ SIMULATION EN COURS...</span>';
+
+      const countdownEl = document.getElementById('countdownNumber');
+      const barEl = document.getElementById('countdownBar');
+      const commentaryEl = document.getElementById('liveCommentary');
+      const commentaryPhrases = [
+        '⚡ Analyse tactique et composition des équipes...',
+        "🔥 Coup d'envoi ! Intensité maximale sur le terrain...",
+        '⚽ Action décisive dans les dernières minutes !'
+      ];
+
+      countdownEl.textContent = '3';
+      barEl.style.width = '100%';
+      commentaryEl.textContent = commentaryPhrases[0];
+      playSound('tick');
+
+      let lastWholeSecond = 3;
+      const startTime = performance.now();
+      const duration = 3000;
+
+      function updateTimer(now) {
+        const elapsed = now - startTime;
+        const remaining = Math.max(0, duration - elapsed);
+        barEl.style.width = `${(remaining / duration) * 100}%`;
+
+        const currentWhole = Math.ceil(remaining / 1000);
+        if (currentWhole !== lastWholeSecond && currentWhole > 0) {
+          lastWholeSecond = currentWhole;
+          countdownEl.textContent = currentWhole;
+          if (currentWhole === 2) {
+            commentaryEl.textContent = commentaryPhrases[1];
+            playSound('tick');
+          } else if (currentWhole === 1) {
+            commentaryEl.textContent = commentaryPhrases[2];
+            playSound('tickFinal');
+          }
+        }
+
+        if (remaining > 0) requestAnimationFrame(updateTimer);
+        else finishDuel();
+      }
+
+      requestAnimationFrame(updateTimer);
+    }
+
+    function finishDuel() {
+      const c1 = state.club1;
+      const c2 = state.club2;
+
+      const ratingDiff = (c1.ovr + 1.5) - c2.ovr;
+      const homeExpectedGoals = Math.max(0.4, 1.45 + (ratingDiff * 0.08) + (Math.random() * 1.1 - 0.55));
+      const awayExpectedGoals = Math.max(0.4, 1.35 - (ratingDiff * 0.08) + (Math.random() * 1.1 - 0.55));
+
+      const score1 = samplePoissonGoals(homeExpectedGoals);
+      const score2 = samplePoissonGoals(awayExpectedGoals);
+
+      let outcome = 'draw';
+      if (score1 > score2) outcome = 'home';
+      else if (score2 > score1) outcome = 'away';
+
+      const events = generateMatchEvents(c1, score1, c2, score2);
+      const rawPoss = 50 + Math.round(ratingDiff * 0.9 + (Math.random() * 12 - 6));
+      const poss1 = Math.min(72, Math.max(28, rawPoss));
+      const poss2 = 100 - poss1;
+
+      const shots1 = Math.max(score1, score1 + Math.floor(Math.random() * 5) + (poss1 > 50 ? 2 : 1));
+      const shots2 = Math.max(score2, score2 + Math.floor(Math.random() * 5) + (poss2 > 50 ? 2 : 1));
+      const shots1Pct = Math.round((shots1 / Math.max(1, shots1 + shots2)) * 100);
+
+      const corners1 = Math.max(1, Math.round((poss1 / 12) + (shots1 * 0.4) + (Math.random() * 3 - 1)));
+      const corners2 = Math.max(1, Math.round((poss2 / 12) + (shots2 * 0.4) + (Math.random() * 3 - 1)));
+      const corners1Pct = Math.round((corners1 / Math.max(1, corners1 + corners2)) * 100);
+
+      document.getElementById('stateCountdown').classList.add('hidden');
+      document.getElementById('stateResult').classList.remove('hidden');
+
+      const announcementEl = document.getElementById('winnerAnnouncement');
+      if (outcome === 'home') {
+        announcementEl.textContent = `🏆 VICTOIRE DE ${c1.name.toUpperCase()} !`;
+        announcementEl.className = 'font-display text-3xl sm:text-4xl font-bold uppercase tracking-wide text-cyan-300 leading-tight';
+        document.getElementById('homeCardWrapper').classList.add('fut-card-winner');
+        triggerVictoryConfetti(c1.c1, c1.c2);
+      } else if (outcome === 'away') {
+        announcementEl.textContent = `🏆 VICTOIRE DE ${c2.name.toUpperCase()} !`;
+        announcementEl.className = 'font-display text-3xl sm:text-4xl font-bold uppercase tracking-wide text-purple-300 leading-tight';
+        document.getElementById('awayCardWrapper').classList.add('fut-card-winner');
+        triggerVictoryConfetti(c2.c1, c2.c2);
+      } else {
+        announcementEl.textContent = `🤝 MATCH NUL ÉPIQUE !`;
+        announcementEl.className = 'font-display text-3xl sm:text-4xl font-bold uppercase tracking-wide text-amber-300 leading-tight';
+      }
+
+      document.getElementById('resHomeShort').textContent = c1.short;
+      document.getElementById('resAwayShort').textContent = c2.short;
+      document.getElementById('resHomeScore').textContent = score1;
+      document.getElementById('resAwayScore').textContent = score2;
+
+      const eventsContainer = document.getElementById('matchEventsList');
+      eventsContainer.innerHTML = events.length === 0
+        ? `<p class="text-slate-400 italic">Duel tactique très fermé, aucune faille trouvée !</p>`
+        : events.map(ev => `
+            <div class="flex items-center justify-center gap-1.5">
+              <span>⚽</span>
+              <span class="font-bold text-white">${ev.scorer}</span>
+              <span class="text-slate-400">(${ev.teamShort} • ${ev.minute}')</span>
+            </div>
+          `).join('');
+
+      document.getElementById('possHomeText').textContent = `${poss1}%`;
+      document.getElementById('possAwayText').textContent = `${poss2}%`;
+      document.getElementById('possHomeBar').style.width = `${poss1}%`;
+      document.getElementById('shotsHomeText').textContent = shots1;
+      document.getElementById('shotsAwayText').textContent = shots2;
+      document.getElementById('shotsHomeBar').style.width = `${shots1Pct}%`;
+      document.getElementById('cornersHomeText').textContent = corners1;
+      document.getElementById('cornersAwayText').textContent = corners2;
+      document.getElementById('cornersHomeBar').style.width = `${corners1Pct}%`;
+
+      evaluatePlayerBet(outcome);
+      addToHistory(c1, score1, c2, score2, outcome, { shots1, shots2, corners1, corners2 });
+      playSound('whistle');
+
+      state.isSimulating = false;
+      syncDuelLimitUI();
+    }
+
+    function samplePoissonGoals(lambda) {
+      let L = Math.exp(-lambda), p = 1.0, k = 0;
+      do { k++; p *= Math.random(); } while (p > L && k < 7);
+      return k - 1;
+    }
+
+    function generateMatchEvents(c1, s1, c2, s2) {
+      const events = [];
+      for (let i = 0; i < s1; i++) {
+        events.push({ minute: Math.floor(Math.random() * 90) + 1, scorer: c1.stars[Math.floor(Math.random() * c1.stars.length)], teamShort: c1.short });
+      }
+      for (let i = 0; i < s2; i++) {
+        events.push({ minute: Math.floor(Math.random() * 90) + 1, scorer: c2.stars[Math.floor(Math.random() * c2.stars.length)], teamShort: c2.short });
+      }
+      return events.sort((a, b) => a.minute - b.minute);
+    }
+
+    function evaluatePlayerBet(actualOutcome) {
+      const banner = document.getElementById('betOutcomeBanner');
+      
