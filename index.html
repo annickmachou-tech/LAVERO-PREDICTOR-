@@ -195,7 +195,7 @@
         <button onclick="setQuickMatch('Manchester City', 'Liverpool')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-400/50 transition">
           🏴󠁧󠁢󠁥󠁮󠁧󠁿 Man City vs Liverpool 🏴󠁧󠁢󠁥󠁮󠁧󠁿
         </button>
-        <button onclick="setQuickMatch('ASEC Mimosas', 'Al Ahly')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-400/50 transition">
+        <button onclick="setQuickMatch('ASEC Mimosas', 'Al Ahly SC')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-400/50 transition">
           🇨🇮 ASEC vs Al Ahly 🇪🇬
         </button>
         <button onclick="randomizeBoth()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-purple-600 to-cyan-600 hover:opacity-90 text-white shadow-md transition">
@@ -218,10 +218,8 @@
           </button>
         </div>
 
-        <!-- Carte Club 1 -->
         <div id="homeSelectedDisplay" class="relative rounded-2xl p-4 overflow-hidden border border-white/15 transition-all duration-300"></div>
 
-        <!-- Recherche rapide -->
         <div class="relative">
           <input type="text" id="search1" oninput="handleSearch(1)" placeholder="Recherche rapide (club, pays, joueur)..."
             class="w-full pl-9 pr-8 py-2.5 rounded-xl bg-slate-950/90 border border-white/10 focus:border-cyan-400 focus:outline-none text-xs sm:text-sm text-white placeholder-slate-500">
@@ -231,7 +229,6 @@
           <button id="clearSearch1" onclick="clearSearch(1)" class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-white text-xs font-bold px-1">✕</button>
         </div>
 
-        <!-- Grille des Blocs Championnats (31 pays) -->
         <div id="blocksWrapper1" class="space-y-2">
           <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-cyan-300">
             <span>🌍 BLOCS CHAMPIONNATS (31 PAYS)</span>
@@ -239,7 +236,6 @@
           <div id="leagueBlocks1" class="custom-scroll grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1"></div>
         </div>
 
-        <!-- Liste des clubs du bloc actif (ou résultats de recherche) -->
         <div class="space-y-1.5 pt-2 border-t border-white/10">
           <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-400">
             <span id="activeLeagueLabel1">🇪🇸 Espagne • LaLiga (20 clubs)</span>
@@ -252,14 +248,12 @@
       <div class="lg:col-span-4 fut-card rounded-3xl p-4 sm:p-5 space-y-5 relative overflow-hidden border-cyan-500/20">
         <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-64 h-64 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- DOUBLE PRONOSTIC -->
         <div class="relative z-10 space-y-3">
           <div class="text-center">
             <span class="text-xs font-bold uppercase tracking-widest text-amber-400">★ TES 2 PRONOSTICS SUR CE DUEL</span>
             <p class="text-[11px] text-slate-400 mt-0.5">Choisis jusqu'à 2 pronostics avant de lancer le duel</p>
           </div>
 
-          <!-- Pronostic 1 : Issue du match -->
           <div class="bg-slate-950/60 border border-white/10 rounded-2xl p-3 space-y-2">
             <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
               <span class="text-cyan-400">PRONOSTIC 1 • ISSUE DU MATCH</span>
@@ -284,7 +278,6 @@
             </div>
           </div>
 
-          <!-- Pronostic 2 : Buts & Scénario -->
           <div class="bg-slate-950/60 border border-white/10 rounded-2xl p-3 space-y-2">
             <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
               <span class="text-amber-400">PRONOSTIC 2 • BUTS & SCÉNARIO</span>
@@ -310,10 +303,8 @@
           </div>
         </div>
 
-        <!-- ARÈNE CENTRALE -->
         <div id="arenaCenterStage" class="relative z-10 flex flex-col items-center justify-center min-h-[220px] rounded-2xl bg-slate-950/80 border border-white/10 p-4 text-center">
           
-          <!-- ÉTAT 1 : PRÊT -->
           <div id="stateReady" class="space-y-3 w-full">
             <div class="flex items-center justify-center gap-4">
               <div id="miniBadge1" class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"></div>
@@ -328,7 +319,6 @@
             </div>
           </div>
 
-          <!-- ÉTAT 2 : CHRONO 3 SECONDES -->
           <div id="stateCountdown" class="hidden w-full space-y-4">
             <div class="flex items-center justify-center gap-3">
               <div id="clashBadge1" class="w-14 h-14 rounded-xl flex items-center justify-center animate-clash-left"></div>
@@ -347,7 +337,6 @@
             </p>
           </div>
 
-          <!-- ÉTAT 3 : RÉSULTAT OFFICIEL -->
           <div id="stateResult" class="hidden w-full space-y-3 animate-verdict">
             <div id="betOutcomeBanners" class="flex flex-wrap items-center justify-center gap-1.5"></div>
 
@@ -359,7 +348,6 @@
               VICTOIRE DE REAL MADRID !
             </h2>
 
-            <!-- Score -->
             <div class="flex items-center justify-center gap-4 bg-slate-900/95 border border-white/15 rounded-2xl py-2 px-5 mx-auto w-fit shadow-xl">
               <span id="resHomeShort" class="text-xs font-bold text-slate-300">RMA</span>
               <div class="font-display text-4xl sm:text-5xl font-bold text-cyan-400 tracking-wider leading-none">
@@ -368,10 +356,8 @@
               <span id="resAwayShort" class="text-xs font-bold text-slate-300">PSG</span>
             </div>
 
-            <!-- Buteurs -->
             <div id="matchEventsList" class="text-xs text-slate-300 space-y-1 max-h-24 overflow-y-auto px-2"></div>
 
-            <!-- Statistiques : Possession, Tirs cadrés, Corners, Cartons -->
             <div class="pt-2 space-y-2 border-t border-white/10">
               <div>
                 <div class="flex justify-between text-[10px] font-bold text-slate-400 mb-1">
@@ -403,7 +389,6 @@
           </div>
         </div>
 
-        <!-- COMPTEUR STRICT DE 2 LANCEMENTS MAX & BOUTON -->
         <div class="relative z-10 space-y-2">
           <div class="flex items-center justify-between text-xs px-1">
             <span class="text-slate-400">Lancements sur ce duel :</span>
@@ -433,10 +418,8 @@
           </button>
         </div>
 
-        <!-- Carte Club 2 -->
         <div id="awaySelectedDisplay" class="relative rounded-2xl p-4 overflow-hidden border border-white/15 transition-all duration-300"></div>
 
-        <!-- Recherche rapide -->
         <div class="relative">
           <input type="text" id="search2" oninput="handleSearch(2)" placeholder="Recherche rapide (club, pays, joueur)..."
             class="w-full pl-9 pr-8 py-2.5 rounded-xl bg-slate-950/90 border border-white/10 focus:border-purple-400 focus:outline-none text-xs sm:text-sm text-white placeholder-slate-500">
@@ -446,7 +429,6 @@
           <button id="clearSearch2" onclick="clearSearch(2)" class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-white text-xs font-bold px-1">✕</button>
         </div>
 
-        <!-- Grille des Blocs Championnats (31 pays) -->
         <div id="blocksWrapper2" class="space-y-2">
           <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-purple-300">
             <span>🌍 BLOCS CHAMPIONNATS (31 PAYS)</span>
@@ -454,7 +436,6 @@
           <div id="leagueBlocks2" class="custom-scroll grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1"></div>
         </div>
 
-        <!-- Liste des clubs du bloc actif -->
         <div class="space-y-1.5 pt-2 border-t border-white/10">
           <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-400">
             <span id="activeLeagueLabel2">🇫🇷 France • Ligue 1 (18 clubs)</span>
@@ -465,7 +446,7 @@
 
     </section>
 
-    <!-- HISTORIQUE DES CONFRONTATIONS RÉCENTES -->
+    <!-- HISTORIQUE -->
     <section class="fut-card rounded-3xl p-5 sm:p-6">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-2.5">
@@ -499,14 +480,131 @@
   <script>
     /**
      * ============================================================================
-     * BASE DE DONNÉES COMPLÈTE : 31 PAYS & 510 CLUBS OFFICIELS (SAISON 2026/2027)
-     * Organisée par blocs de championnats exactement comme affiché à l'écran.
+     * EFFECTIFS ATTITRÉS PAR CLUB (AUCUN MÉLANGE ENTRE ÉQUIPES)
+     * Chaque club possède ses propres joueurs vedettes cohérents avec son effectif.
      * ============================================================================
      */
+    const CLUB_STARS_MAP = {
+      // Espagne — LaLiga
+      'Real Madrid': ['Kylian Mbappé', 'Vinícius Jr', 'Jude Bellingham', 'Federico Valverde'],
+      'FC Barcelone': ['Lamine Yamal', 'Raphinha', 'Pedri', 'Robert Lewandowski'],
+      'Atlético Madrid': ['Julián Álvarez', 'Antoine Griezmann', 'Álex Baena', 'Robin Le Normand'],
+      'Athletic Bilbao': ['Nico Williams', 'Iñaki Williams', 'Oihan Sancet', 'Dani Vivian'],
+      'Real Sociedad': ['Takefusa Kubo', 'Mikel Oyarzabal', 'Brais Méndez', 'Orri Óskarsson'],
+      'Villarreal': ['Gerard Moreno', 'Ayoze Pérez', 'Yeremy Pino', 'Álex Baena'],
+      'Real Betis': ['Isco', 'Giovani Lo Celso', 'Ez Abde', 'Vitor Roque'],
+      'Séville FC': ['Dodi Lukebakio', 'Isaac Romero', 'Chidera Ejuke', 'Saúl Ñíguez'],
+      'Girona FC': ['Bryan Gil', 'Yangel Herrera', 'Abel Ruiz', 'Arnaut Danjuma'],
+      'Valence CF': ['Hugo Duro', 'Pepelu', 'André Almeida', 'Diego López'],
+      'Celta Vigo': ['Iago Aspas', 'Óscar Mingueza', 'Borja Iglesias', 'Williot Swedberg'],
+      'Osasuna': ['Ante Budimir', 'Aimar Oroz', 'Bryan Zaragoza', 'Jon Moncayola'],
+      'RCD Mallorca': ['Vedat Muriqi', 'Sergi Darder', 'Dani Rodríguez', 'Samú Costa'],
+      'Rayo Vallecano': ['Isi Palazón', 'Sergio Camello', 'Jorge de Frutos', 'Álvaro García'],
+      'Getafe CF': ['Borja Mayoral', 'Luis Milla', 'Mauro Arambarri', 'Christantus Uche'],
+      'Deportivo Alavés': ['Carlos Vicente', 'Joan Jordán', 'Kike García', 'Toni Martínez'],
+      'RCD Espanyol': ['Javi Puado', 'Marash Kumbulla', 'Álex Kral', 'Walid Cheddira'],
+      'UD Las Palmas': ['Alberto Moleiro', 'Fabio Silva', 'Kirian Rodríguez', 'Oliver McBurnie'],
+      'CD Leganés': ['Dani Raba', 'Óscar Rodríguez', 'Miguel de la Fuente', 'Seydouba Cissé'],
+      'Real Valladolid': ['Marcos André', 'Kike Pérez', 'Mamadou Sylla', 'Stanko Jurić'],
+
+      // Angleterre — Premier League
+      'Manchester City': ['Erling Haaland', 'Phil Foden', 'Rodri', 'Jérémy Doku'],
+      'Liverpool': ['Mohamed Salah', 'Florian Wirtz', 'Alexander Isak', 'Virgil van Dijk'],
+      'Arsenal': ['Bukayo Saka', 'Martin Ødegaard', 'Declan Rice', 'William Saliba'],
+      'Chelsea': ['Cole Palmer', 'Enzo Fernández', 'Pedro Neto', 'Moisés Caicedo'],
+      'Manchester United': ['Bruno Fernandes', 'Amad Diallo', 'Matheus Cunha', 'Kobbie Mainoo'],
+      'Tottenham Hotspur': ['James Maddison', 'Dominic Solanke', 'Mohammed Kudus', 'Xavi Simons'],
+      'Newcastle United': ['Anthony Gordon', 'Bruno Guimarães', 'Sandro Tonali', 'Harvey Barnes'],
+      'Aston Villa': ['Ollie Watkins', 'Morgan Rogers', 'Amadou Onana', 'Youri Tielemans'],
+      'Brighton': ['Kaoru Mitoma', 'Georginio Rutter', 'João Pedro', 'Carlos Baleba'],
+      'West Ham United': ['Jarrod Bowen', 'Lucas Paquetá', 'Mohammed Kudus', 'Tomáš Souček'],
+      'Nottingham Forest': ['Chris Wood', 'Morgan Gibbs-White', 'Callum Hudson-Odoi', 'Anthony Elanga'],
+      'Bournemouth': ['Justin Kluivert', 'Antoine Semenyo', 'Evanilson', 'Milos Kerkez'],
+      'Fulham': ['Raúl Jiménez', 'Alex Iwobi', 'Antonee Robinson', 'Emile Smith Rowe'],
+      'Brentford': ['Bryan Mbeumo', 'Yoane Wissa', 'Mikkel Damsgaard', 'Kevin Schade'],
+      'Crystal Palace': ['Eberechi Eze', 'Jean-Philippe Mateta', 'Adam Wharton', 'Marc Guéhi'],
+      'Everton': ['Iliman Ndiaye', 'Jarrad Branthwaite', 'Dwight McNeil', 'Beto'],
+      'Wolverhampton': ['Matheus Cunha', 'Jørgen Strand Larsen', 'João Gomes', 'Rayan Aït-Nouri'],
+      'Leicester City': ['Bilal El Khannouss', 'Facundo Buonanotte', 'Stephy Mavididi', 'Wilfred Ndidi'],
+      'Ipswich Town': ['Liam Delap', 'Omari Hutchinson', 'Sam Morsy', 'Leif Davis'],
+      'Southampton': ['Tyler Dibling', 'Mateus Fernandes', 'Cameron Archer', 'Aaron Ramsdale'],
+
+      // Italie — Serie A
+      'Inter Milan': ['Lautaro Martínez', 'Marcus Thuram', 'Nicolò Barella', 'Alessandro Bastoni'],
+      'Napoli': ['Romelu Lukaku', 'Scott McTominay', 'David Neres', 'Giovanni Di Lorenzo'],
+      'AC Milan': ['Christian Pulisic', 'Rafael Leão', 'Tijjani Reijnders', 'Mike Maignan'],
+      'Juventus': ['Kenan Yıldız', 'Dušan Vlahović', 'Khéphren Thuram', 'Francisco Conceição'],
+      'Atalanta': ['Mateo Retegui', 'Ademola Lookman', 'Charles De Ketelaere', 'Éderson'],
+      'AS Roma': ['Paulo Dybala', 'Artem Dovbyk', 'Matías Soulé', 'Manu Koné'],
+      'Lazio': ['Mattia Zaccagni', 'Valentín Castellanos', 'Nicolò Rovella', 'Matteo Guendouzi'],
+      'Fiorentina': ['Moise Kean', 'Albert Guðmundsson', 'David de Gea', 'Dodô'],
+      'Bologna': ['Riccardo Orsolini', 'Santiago Castro', 'Dan Ndoye', 'Lewis Ferguson'],
+      'Torino': ['Che Adams', 'Samuele Ricci', 'Nikola Vlašić', 'Vanja Milinković-Savić'],
+      'Udinese': ['Lorenzo Lucca', 'Florian Thauvin', 'Arthur Atta', 'Jaka Bijol'],
+      'Genoa': ['Andrea Pinamonti', 'Morten Frendrup', 'Junior Messias', 'Koni De Winter'],
+      'Como 1907': ['Nico Paz', 'Patrick Cutrone', 'Assane Diao', 'Sergi Roberto'],
+      'Parma': ['Dennis Man', 'Ange-Yoan Bonny', 'Adrian Bernabé', 'Simon Sohm'],
+      'Cagliari': ['Roberto Piccoli', 'Gianluca Gaetano', 'Zito Luvumbo', 'Yerry Mina'],
+      'Hellas Vérone': ['Casper Tengstedt', 'Ondřej Duda', 'Reda Belahyane', 'Jackson Tchatchoua'],
+      'Empoli': ['Sebastiano Esposito', 'Jacopo Fazzini', 'Liam Henderson', 'Ardian Ismajli'],
+      'US Lecce': ['Nikola Krstović', 'Patrick Dorgu', 'Ylber Ramadani', 'Santiago Pierotti'],
+      'AC Monza': ['Dany Mota', 'Daniel Maldini', 'Warren Bondo', 'Matteo Pessina'],
+      'Venezia FC': ['Joel Pohjanpalo', 'Gianluca Busio', 'Hans Nicolussi Caviglia', 'Gaetano Oristanio'],
+
+      // France — Ligue 1
+      'Paris Saint-Germain': ['Ousmane Dembélé', 'Bradley Barcola', 'Vitinha', 'Achraf Hakimi'],
+      'Olympique de Marseille': ['Mason Greenwood', 'Amine Gouiri', 'Pierre-Emile Højbjerg', 'Adrien Rabiot'],
+      'AS Monaco': ['Maghnes Akliouche', 'Denis Zakaria', 'Aleksandr Golovin', 'Mika Biereth'],
+      'Olympique Lyonnais': ['Corentin Tolisso', 'Georges Mikautadze', 'Malick Fofana', 'Nemanja Matić'],
+      'LOSC Lille': ['Jonathan David', 'Edon Zhegrova', 'Ayyoub Bouaddi', 'Lucas Chevalier'],
+      'OGC Nice': ['Evann Guessand', 'Sofiane Diop', 'Hicham Boudaoui', 'Marcin Bułka'],
+      'RC Lens': ['Florian Sotoca', 'Neil El Aynaoui', 'Przemysław Frankowski', 'Facundo Medina'],
+      'Stade Rennais': ['Amine Gouiri', 'Arnaud Kalimuendo', 'Ludovic Blas', 'Brice Samba'],
+      'Stade Brestois': ['Ludovic Ajorque', 'Kamory Doumbia', 'Romain Faivre', 'Marco Bizot'],
+      'RC Strasbourg': ['Andrey Santos', 'Emanuel Emegha', 'Diego Moreira', 'Habib Diarra'],
+      'Stade de Reims': ['Keito Nakamura', 'Marshall Munetsi', 'Junnya Ito', 'Joseph Okumu'],
+      'Toulouse FC': ['Zakaria Aboukhlal', 'Shavy Babicka', 'Vincent Sierro', 'Charlie Cresswell'],
+      'FC Nantes': ['Matthis Abline', 'Moses Simon', 'Pedro Chirivella', 'Alban Lafont'],
+      'AJ Auxerre': ['Hamed Traorè', 'Lassine Sinayoko', 'Gaëtan Perrin', 'Jubal'],
+      'AS Saint-Étienne': ['Zuriko Davitashvili', 'Lucas Stassin', 'Augustine Boakye', 'Gautier Larsonneur'],
+      'Montpellier HSC': ['Téji Savanier', 'Arnaud Nordin', 'Akor Adams', 'Modibo Sagnan'],
+      'Angers SCO': ['Esteban Lepaul', 'Himad Abdelli', 'Jean-Eudes Aholou', 'Yahia Fofana'],
+      'Le Havre AC': ['Abdoulaye Touré', 'Josué Casimir', 'Arouna Sangante', 'Arthur Desmas'],
+
+      // Allemagne — Bundesliga
+      'Bayern Munich': ['Harry Kane', 'Jamal Musiala', 'Michael Olise', 'Joshua Kimmich'],
+      'Borussia Dortmund': ['Serhou Guirassy', 'Julian Brandt', 'Nico Schlotterbeck', 'Karim Adeyemi'],
+      'Bayer Leverkusen': ['Florian Wirtz', 'Victor Boniface', 'Granit Xhaka', 'Alejandro Grimaldo'],
+      'RB Leipzig': ['Loïs Openda', 'Xavi Simons', 'Benjamin Šeško', 'Castello Lukeba'],
+      'VfB Stuttgart': ['Angelo Stiller', 'Deniz Undav', 'Ermedin Demirović', 'Maximilian Mittelstädt'],
+      'Eintracht Frankfurt': ['Omar Marmoush', 'Hugo Ekitiké', 'Can Uzun', 'Mario Götze'],
+      'SC Freiburg': ['Vincenzo Grifo', 'Ritsu Doan', 'Lucas Höler', 'Matthias Ginter'],
+      'VfL Wolfsburg': ['Mohamed Amoura', 'Jonas Wind', 'Lovro Majer', 'Maximilian Arnold'],
+      'Borussia M\'gladbach': ['Tim Kleindienst', 'Franck Honorat', 'Alassane Pléa', 'Julian Weigl'],
+      'TSG Hoffenheim': ['Andrej Kramarić', 'Tom Bischof', 'Adam Hložek', 'Oliver Baumann'],
+      'Werder Brême': ['Marvin Ducksch', 'Mitchell Weiser', 'Jens Stage', 'Romano Schmid'],
+      'FSV Mayence 05': ['Jonathan Burkardt', 'Nadiem Amiri', 'Lee Jae-sung', 'Robin Zentner'],
+      'Union Berlin': ['Benedict Hollerbach', 'Rani Khedira', 'Diogo Leite', 'Frederik Rønnow'],
+      'FC Augsbourg': ['Alexis Claude-Maurice', 'Samuel Essende', 'Kristijan Jakić', 'Keven Schlotterbeck'],
+      'VfL Bochum': ['Myron Boadu', 'Matúš Bero', 'Maximilian Wittek', 'Patrick Drewes'],
+      'FC Heidenheim': ['Tim Kleindienst', 'Marvin Pieringer', 'Jan-Niklas Beste', 'Lennard Maloney'],
+      'FC St. Pauli': ['Jackson Irvine', 'Morgan Guilavogui', 'Eric Smith', 'Nikola Vasilj'],
+      'Holstein Kiel': ['Steven Skrzybski', 'Lewis Holtby', 'Shuto Machino', 'Timon Weiner'],
+
+      // Afrique — CAF (avec clubs demandés)
+      'ASEC Mimosas': ['Salifou Diarrassouba', 'Essis Aka', 'Célestin Ecua', 'Sankara Karamoko'],
+      'Al Ahly SC': ['Wessam Abou Ali', 'Emam Ashour', 'Zizo', 'Achraf Bencharki'],
+      'Wydad AC': ['Mohamed Rayhi', 'Cassius Mailula', 'Oussama Zemraoui', 'Ayoub El Amloud'],
+      'Raja CA': ['Yousri Bouzok', 'Adam Ennafati', 'Sabir Bougrine', 'Anas Zniti'],
+      'Espérance de Tunis': ['Youcef Belaïli', 'Yan Sasse', 'Rodrigo Rodrigues', 'Yassine Meriah'],
+      'Mamelodi Sundowns': ['Lucas Ribeiro', 'Peter Shalulile', 'Teboho Mokoena', 'Themba Zwane'],
+      'MC Alger': ['Andy Delort', 'Zakaria Naidji', 'Ayoub Abdellaoui', 'Oussama Benbot'],
+      'CR Belouizdad': ['Abderrahmane Meziane', 'Khaled Bousseliou', 'Raouf Benguit', 'Islam Bakir']
+    };
+
     const LEAGUES_DATA = [
       {
-        id: 'esp', country: 'Espagne', league: 'LaLiga', flag: '🇪🇸', c1: '#dc2626', c2: '#facc15', textDark: false,
-        starsPool: ['Kylian Mbappé', 'yann diomande', 'Jude Bellingham',  arda guler    'Lamine Yamal', 'Raphinha', 'Julián Álvarez', 'Nico Williams', 'Takefusa Kubo',],
+        id: 'esp', country: 'Espagne', league: 'LaLiga', flag: '🇪🇸',
         clubs: [
           ['Real Madrid', 'RMA', 93, '#ffffff', '#eab308', true], ['FC Barcelone', 'BAR', 91, '#1d4ed8', '#b91c1c', false],
           ['Atlético Madrid', 'ATM', 87, '#dc2626', '#ffffff', false], ['Athletic Bilbao', 'ATH', 83, '#dc2626', '#111827', false],
@@ -521,8 +619,7 @@
         ]
       },
       {
-        id: 'eng', country: 'Angleterre', league: 'Premier League', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', c1: '#1d4ed8', c2: '#dc2626', textDark: false,
-        starsPool: ['Erling Haaland', 'Phil Foden', 'Alexander Isak', 'Florian Wirtz', 'Bukayo Saka', 'Cole Palmer', 'Bruno Fernandes', 'Declan Rice', 'Omar Marmoush', 'Martin Ødegaard'],
+        id: 'eng', country: 'Angleterre', league: 'Premier League', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
         clubs: [
           ['Manchester City', 'MCI', 92, '#38bdf8', '#1e3a8a', true], ['Liverpool', 'LIV', 92, '#b91c1c', '#f59e0b', false],
           ['Arsenal', 'ARS', 90, '#dc2626', '#ffffff', false], ['Chelsea', 'CHE', 87, '#1d4ed8', '#ffffff', false],
@@ -537,8 +634,7 @@
         ]
       },
       {
-        id: 'ita', country: 'Italie', league: 'Serie A', flag: '🇮🇹', c1: '#16a34a', c2: '#dc2626', textDark: false,
-        starsPool: ['Lautaro Martínez', 'Marcus Thuram', 'Kevin De Bruyne', 'Kenan Yıldız', 'Christian Pulisic', 'Nicolò Barella', 'Paulo Dybala', 'Mateo Retegui', 'Rasmus Højlund', 'Gonçalo Ramos'],
+        id: 'ita', country: 'Italie', league: 'Serie A', flag: '🇮🇹',
         clubs: [
           ['Inter Milan', 'INT', 89, '#1d4ed8', '#09090b', false], ['Napoli', 'NAP', 87, '#0284c7', '#ffffff', false],
           ['AC Milan', 'MIL', 86, '#dc2626', '#09090b', false], ['Juventus', 'JUV', 86, '#ffffff', '#09090b', true],
@@ -553,8 +649,7 @@
         ]
       },
       {
-        id: 'fra', country: 'France', league: 'Ligue 1', flag: '🇫🇷', c1: '#1d4ed8', c2: '#dc2626', textDark: false,
-        starsPool: ['Ousmane Dembélé', 'Bradley Barcola', 'Vitinha', 'Achraf Hakimi', 'Warren Zaïre-Emery', 'Kvaratskhelia', 'Amine Gouiri', 'Aleksandr Golovin', 'Corentin Tolisso', 'Evann Guessand'],
+        id: 'fra', country: 'France', league: 'Ligue 1', flag: '🇫🇷',
         clubs: [
           ['Paris Saint-Germain', 'PSG', 91, '#0f172a', '#dc2626', false], ['Olympique de Marseille', 'OM', 83, '#ffffff', '#0ea5e9', true],
           ['AS Monaco', 'ASM', 83, '#dc2626', '#ffffff', false], ['Olympique Lyonnais', 'OL', 82, '#ffffff', '#1d4ed8', true],
@@ -568,8 +663,7 @@
         ]
       },
       {
-        id: 'ger', country: 'Allemagne', league: 'Bundesliga', flag: '🇩🇪', c1: '#09090b', c2: '#dc2626', textDark: false,
-        starsPool: ['Harry Kane', 'Jamal Musiala', 'Michael Olise', 'Serhou Guirassy', 'Victor Boniface', 'Loïs Openda', 'Joshua Kimmich', 'Julian Brandt', 'Patrik Schick', 'Luis Díaz'],
+        id: 'ger', country: 'Allemagne', league: 'Bundesliga', flag: '🇩🇪',
         clubs: [
           ['Bayern Munich', 'BAY', 91, '#dc2626', '#ffffff', false], ['Borussia Dortmund', 'BVB', 85, '#facc15', '#09090b', true],
           ['Bayer Leverkusen', 'B04', 85, '#09090b', '#dc2626', false], ['RB Leipzig', 'RBL', 84, '#ffffff', '#dc2626', true],
@@ -583,8 +677,7 @@
         ]
       },
       {
-        id: 'ned', country: 'Pays-Bas', league: 'Eredivisie', flag: '🇳🇱', c1: '#dc2626', c2: '#1d4ed8', textDark: false,
-        starsPool: ['Johan Bakayoko', 'Brian Brobbey', 'Quinten Timber', 'Joey Veerman', 'Kenneth Taylor', 'Troy Parrott', 'Sem Steijn', 'Luuk de Jong'],
+        id: 'ned', country: 'Pays-Bas', league: 'Eredivisie', flag: '🇳🇱',
         clubs: [
           ['PSV Eindhoven', 'PSV', 83, '#dc2626', '#ffffff', false], ['Ajax Amsterdam', 'AJA', 82, '#ffffff', '#dc2626', true],
           ['Feyenoord', 'FEY', 82, '#dc2626', '#09090b', false], ['AZ Alkmaar', 'AZ', 80, '#dc2626', '#ffffff', false],
@@ -598,8 +691,7 @@
         ]
       },
       {
-        id: 'tur', country: 'Turquie', league: 'Süper Lig', flag: '🇹🇷', c1: '#dc2626', c2: '#ffffff', textDark: false,
-        starsPool: ['Victor Osimhen', 'Mauro Icardi', 'Youssef En-Nesyri', 'Rafa Silva', 'Ciro Immobile', 'Edin Džeko', 'Dries Mertens', 'Simon Banza'],
+        id: 'tur', country: 'Turquie', league: 'Süper Lig', flag: '🇹🇷',
         clubs: [
           ['Galatasaray', 'GAL', 84, '#dc2626', '#facc15', false], ['Fenerbahçe', 'FEN', 83, '#facc15', '#1e3a8a', true],
           ['Beşiktaş', 'BJK', 81, '#09090b', '#ffffff', false], ['Trabzonspor', 'TRA', 79, '#7f1d1d', '#38bdf8', false],
@@ -613,8 +705,7 @@
         ]
       },
       {
-        id: 'bel', country: 'Belgique', league: 'Pro League', flag: '🇧🇪', c1: '#09090b', c2: '#facc15', textDark: false,
-        starsPool: ['Hans Vanaken', 'Christos Tzolis', 'Kasper Dolberg', 'Tolu Arokodare', 'Franjo Ivanović', 'Vincent Janssen', 'Promise David'],
+        id: 'bel', country: 'Belgique', league: 'Pro League', flag: '🇧🇪',
         clubs: [
           ['Club Bruges', 'CLU', 81, '#1d4ed8', '#09090b', false], ['RSC Anderlecht', 'AND', 79, '#7e22ce', '#ffffff', false],
           ['KRC Genk', 'GNK', 79, '#1d4ed8', '#ffffff', false], ['Union Saint-Gilloise', 'USG', 79, '#facc15', '#1e3a8a', true],
@@ -627,8 +718,7 @@
         ]
       },
       {
-        id: 'gre', country: 'Grèce', league: 'Super League', flag: '🇬🇷', c1: '#0284c7', c2: '#ffffff', textDark: false,
-        starsPool: ['Ayoub El Kaabi', 'Fotis Ioannidis', 'Levi García', 'Giannis Konstantelias', 'Loren Morón', 'Taison'],
+        id: 'gre', country: 'Grèce', league: 'Super League', flag: '🇬🇷',
         clubs: [
           ['Olympiakos', 'OLY', 81, '#dc2626', '#ffffff', false], ['PAOK Salonique', 'PAOK', 80, '#09090b', '#ffffff', false],
           ['AEK Athènes', 'AEK', 80, '#facc15', '#09090b', true], ['Panathinaïkos', 'PAO', 80, '#15803d', '#ffffff', false],
@@ -640,8 +730,7 @@
         ]
       },
       {
-        id: 'sui', country: 'Suisse', league: 'Super League', flag: '🇨🇭', c1: '#dc2626', c2: '#ffffff', textDark: false,
-        starsPool: ['Xherdan Shaqiri', 'Joël Monteiro', 'Dereck Kutesa', 'Silvère Ganvoula', 'Willem Geubbels'],
+        id: 'sui', country: 'Suisse', league: 'Super League', flag: '🇨🇭',
         clubs: [
           ['BSC Young Boys', 'YB', 78, '#facc15', '#09090b', true], ['FC Bâle', 'FCB', 78, '#dc2626', '#1d4ed8', false],
           ['Servette FC', 'SFC', 77, '#7f1d1d', '#ffffff', false], ['FC Lugano', 'LUG', 77, '#09090b', '#ffffff', false],
@@ -652,8 +741,7 @@
         ]
       },
       {
-        id: 'den', country: 'Danemark', league: 'Superliga', flag: '🇩🇰', c1: '#dc2626', c2: '#ffffff', textDark: false,
-        starsPool: ['Mohamed Elyounoussi', 'Franculino Djú', 'Mathias Kvistgaarden', 'Patrick Mortensen', 'Orri Óskarsson'],
+        id: 'den', country: 'Danemark', league: 'Superliga', flag: '🇩🇰',
         clubs: [
           ['FC Copenhague', 'FCK', 79, '#ffffff', '#1d4ed8', true], ['FC Midtjylland', 'FCM', 78, '#09090b', '#dc2626', false],
           ['Brøndby IF', 'BIF', 77, '#facc15', '#1d4ed8', true], ['FC Nordsjælland', 'FCN', 76, '#dc2626', '#facc15', false],
@@ -664,8 +752,7 @@
         ]
       },
       {
-        id: 'sco', country: 'Écosse', league: 'Premiership', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', c1: '#1e3a8a', c2: '#ffffff', textDark: false,
-        starsPool: ['Kyogo Furuhashi', 'Nicolas Kühn', 'Václav Černý', 'Cyriel Dessers', 'Lawrence Shankland'],
+        id: 'sco', country: 'Écosse', league: 'Premiership', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
         clubs: [
           ['Celtic Glasgow', 'CEL', 80, '#15803d', '#ffffff', false], ['Rangers FC', 'RAN', 79, '#1d4ed8', '#ffffff', false],
           ['Heart of Midlothian', 'HEA', 75, '#7f1d1d', '#ffffff', false], ['Aberdeen FC', 'ABE', 75, '#dc2626', '#ffffff', false],
@@ -676,8 +763,7 @@
         ]
       },
       {
-        id: 'nor', country: 'Norvège', league: 'Eliteserien', flag: '🇳🇴', c1: '#dc2626', c2: '#1e3a8a', textDark: false,
-        starsPool: ['Jens Petter Hauge', 'Kasper Høgh', 'Magnus Wolff Eikrem', 'Zlatko Tripić', 'Sverre Nypan'],
+        id: 'nor', country: 'Norvège', league: 'Eliteserien', flag: '🇳🇴',
         clubs: [
           ['FK Bodø/Glimt', 'BOD', 78, '#facc15', '#09090b', true], ['Molde FK', 'MOL', 77, '#1d4ed8', '#ffffff', false],
           ['Viking FK', 'VIK', 75, '#1e3a8a', '#ffffff', false], ['SK Brann', 'BRA', 75, '#dc2626', '#ffffff', false],
@@ -690,8 +776,7 @@
         ]
       },
       {
-        id: 'swe', country: 'Suède', league: 'Allsvenskan', flag: '🇸🇪', c1: '#1d4ed8', c2: '#facc15', textDark: false,
-        starsPool: ['Isaac Kiese Thelin', 'Sebastian Nanasi', 'Nahir Besara', 'Ioannis Pittas', 'Tobias Gulliksen'],
+        id: 'swe', country: 'Suède', league: 'Allsvenskan', flag: '🇸🇪',
         clubs: [
           ['Malmö FF', 'MFF', 77, '#38bdf8', '#ffffff', true], ['Djurgårdens IF', 'DIF', 75, '#1d4ed8', '#38bdf8', false],
           ['Hammarby IF', 'HAM', 75, '#15803d', '#ffffff', false], ['AIK Solna', 'AIK', 75, '#09090b', '#facc15', false],
@@ -704,8 +789,7 @@
         ]
       },
       {
-        id: 'aut', country: 'Autriche', league: 'Bundesliga', flag: '🇦🇹', c1: '#dc2626', c2: '#ffffff', textDark: false,
-        starsPool: ['Oscar Gloukh', 'Karim Konaté', 'Otar Kiteishvili', 'Mika Biereth', 'Guido Burgstaller'],
+        id: 'aut', country: 'Autriche', league: 'Bundesliga', flag: '🇦🇹',
         clubs: [
           ['RB Salzbourg', 'RBS', 79, '#dc2626', '#ffffff', false], ['Sturm Graz', 'STU', 78, '#09090b', '#ffffff', false],
           ['Rapid Vienne', 'RAP', 76, '#15803d', '#ffffff', false], ['LASK Linz', 'LASK', 76, '#09090b', '#ffffff', false],
@@ -716,8 +800,7 @@
         ]
       },
       {
-        id: 'pol', country: 'Pologne', league: 'Ekstraklasa', flag: '🇵🇱', c1: '#ffffff', c2: '#dc2626', textDark: true,
-        starsPool: ['Mikael Ishak', 'Jesús Imaz', 'Afimico Pululu', 'Bartosz Kapustka', 'Kamil Grosicki'],
+        id: 'pol', country: 'Pologne', league: 'Ekstraklasa', flag: '🇵🇱',
         clubs: [
           ['Lech Poznań', 'LPO', 76, '#1d4ed8', '#ffffff', false], ['Legia Varsovie', 'LEG', 76, '#15803d', '#ffffff', false],
           ['Jagiellonia Białystok', 'JAG', 76, '#facc15', '#dc2626', true], ['Raków Częstochowa', 'RAK', 76, '#dc2626', '#1e3a8a', false],
@@ -731,8 +814,7 @@
         ]
       },
       {
-        id: 'cro', country: 'Croatie', league: 'HNL', flag: '🇭🇷', c1: '#dc2626', c2: '#1d4ed8', textDark: false,
-        starsPool: ['Martin Baturina', 'Bruno Petković', 'Marko Livaja', 'Ivan Rakitić', 'Toni Fruk'],
+        id: 'cro', country: 'Croatie', league: 'HNL', flag: '🇭🇷',
         clubs: [
           ['Dinamo Zagreb', 'DZG', 79, '#1d4ed8', '#ffffff', false], ['Hajduk Split', 'HAJ', 77, '#ffffff', '#1d4ed8', true],
           ['HNK Rijeka', 'RIJ', 76, '#ffffff', '#0284c7', true], ['NK Osijek', 'OSI', 74, '#1d4ed8', '#ffffff', false],
@@ -742,8 +824,7 @@
         ]
       },
       {
-        id: 'srb', country: 'Serbie', league: 'SuperLiga', flag: '🇷🇸', c1: '#dc2626', c2: '#1d4ed8', textDark: false,
-        starsPool: ['Cherif Ndiaye', 'Silas Katompa', 'Mirko Ivanić', 'Bibars Natcho', 'Mihajlo Ivanović'],
+        id: 'srb', country: 'Serbie', league: 'SuperLiga', flag: '🇷🇸',
         clubs: [
           ['Étoile Rouge Belgrade', 'CZV', 79, '#dc2626', '#ffffff', false], ['Partizan Belgrade', 'PAR', 76, '#09090b', '#ffffff', false],
           ['FK TSC Bačka Topola', 'TSC', 74, '#1d4ed8', '#ffffff', false], ['FK Vojvodina', 'VOJ', 74, '#dc2626', '#ffffff', false],
@@ -756,8 +837,7 @@
         ]
       },
       {
-        id: 'ukr', country: 'Ukraine', league: 'Premier League', flag: '🇺🇦', c1: '#1d4ed8', c2: '#facc15', textDark: false,
-        starsPool: ['Georgiy Sudakov', 'Mykola Shaparenko', 'Vladyslav Vanat', 'Danylo Sikan', 'Artem Bondarenko'],
+        id: 'ukr', country: 'Ukraine', league: 'Premier League', flag: '🇺🇦',
         clubs: [
           ['Shakhtar Donetsk', 'SHA', 78, '#ea580c', '#09090b', false], ['Dynamo Kiev', 'DYN', 77, '#ffffff', '#1d4ed8', true],
           ['Polissya Zhytomyr', 'POL', 74, '#15803d', '#facc15', false], ['FK Oleksandria', 'OLE', 74, '#facc15', '#09090b', true],
@@ -770,8 +850,7 @@
         ]
       },
       {
-        id: 'rou', country: 'Roumanie', league: 'SuperLiga', flag: '🇷🇴', c1: '#1d4ed8', c2: '#facc15', textDark: false,
-        starsPool: ['Darius Olaru', 'Daniel Bîrligea', 'Louis Munteanu', 'Alexandru Mitriță', 'Denis Alibec'],
+        id: 'rou', country: 'Roumanie', league: 'SuperLiga', flag: '🇷🇴',
         clubs: [
           ['FCSB Bucarest', 'FCSB', 76, '#dc2626', '#1d4ed8', false], ['CFR Cluj', 'CFR', 76, '#7f1d1d', '#ffffff', false],
           ['Universitatea Craiova', 'UCV', 75, '#1d4ed8', '#ffffff', false], ['Rapid Bucarest', 'RAP', 75, '#7f1d1d', '#ffffff', false],
@@ -784,8 +863,7 @@
         ]
       },
       {
-        id: 'cze', country: 'République tchèque', league: 'Chance Liga', flag: '🇨🇿', c1: '#dc2626', c2: '#1d4ed8', textDark: false,
-        starsPool: ['Lukáš Haraslín', 'Tomáš Chorý', 'Pavel Šulc', 'Veljko Birmančević', 'Mojmír Chytil'],
+        id: 'cze', country: 'République tchèque', league: 'Chance Liga', flag: '🇨🇿',
         clubs: [
           ['Slavia Prague', 'SLA', 79, '#dc2626', '#ffffff', false], ['Sparta Prague', 'SPA', 79, '#7f1d1d', '#ffffff', false],
           ['Viktoria Plzeň', 'PLZ', 77, '#dc2626', '#1d4ed8', false], ['Baník Ostrava', 'BAN', 75, '#1d4ed8', '#ffffff', false],
@@ -798,8 +876,7 @@
         ]
       },
       {
-        id: 'bul', country: 'Bulgarie', league: 'Parva Liga', flag: '🇧🇬', c1: '#15803d', c2: '#dc2626', textDark: false,
-        starsPool: ['Kwadwo Duah', 'Jakub Piotrowski', 'Rwan Cruz', 'Mustafa Sangaré', 'Goduine Koyalipou'],
+        id: 'bul', country: 'Bulgarie', league: 'Parva Liga', flag: '🇧🇬',
         clubs: [
           ['Ludogorets Razgrad', 'LUD', 76, '#15803d', '#ffffff', false], ['Levski Sofia', 'LEV', 74, '#1d4ed8', '#ffffff', false],
           ['CSKA Sofia', 'CSKA', 74, '#dc2626', '#ffffff', false], ['Botev Plovdiv', 'BOT', 73, '#facc15', '#09090b', true],
@@ -812,8 +889,7 @@
         ]
       },
       {
-        id: 'civ', country: 'Côte d\'Ivoire', league: 'Ligue 1', flag: '🇨🇮', c1: '#ea580c', c2: '#15803d', textDark: false,
-        starsPool: ['Salifou Diarrassouba', 'Essis Aka', 'Célestin Ecua', 'Sankara Karamoko', 'Zouzoua Pacôme', 'Konaté Karim'],
+        id: 'civ', country: 'Côte d\'Ivoire', league: 'Ligue 1', flag: '🇨🇮',
         clubs: [
           ['ASEC Mimosas', 'ASEC', 77, '#facc15', '#09090b', true], ['Stade d\'Abidjan', 'STAD', 75, '#dc2626', '#1d4ed8', false],
           ['FC San Pedro', 'FCSP', 75, '#ea580c', '#09090b', false], ['AFAD Djékanou', 'AFAD', 74, '#1d4ed8', '#ffffff', false],
@@ -826,8 +902,7 @@
         ]
       },
       {
-        id: 'mar', country: 'Maroc', league: 'Botola Pro', flag: '🇲🇦', c1: '#dc2626', c2: '#15803d', textDark: false,
-        starsPool: ['Mohamed Rayhi', 'Yousri Bouzok', 'Mohamed Hrimat', 'Issoufou Dayo', 'Reda Slim', 'Amine Zouhzouh'],
+        id: 'mar', country: 'Maroc', league: 'Botola Pro', flag: '🇲🇦',
         clubs: [
           ['AS FAR Rabat', 'FAR', 78, '#09090b', '#dc2626', false], ['Raja CA', 'RCA', 78, '#15803d', '#ffffff', false],
           ['Wydad AC', 'WAC', 78, '#dc2626', '#ffffff', false], ['RS Berkane', 'RSB', 77, '#ea580c', '#09090b', false],
@@ -840,8 +915,7 @@
         ]
       },
       {
-        id: 'egy', country: 'Égypte', league: 'Premier League', flag: '🇪🇬', c1: '#dc2626', c2: '#09090b', textDark: false,
-        starsPool: ['Wessam Abou Ali', 'Emam Ashour', 'Zizo', 'Fiston Mayele', 'Ibrahim Adel', 'Achraf Bencharki', 'Mostafa Fathi'],
+        id: 'egy', country: 'Égypte', league: 'Premier League', flag: '🇪🇬',
         clubs: [
           ['Al Ahly SC', 'AHL', 81, '#dc2626', '#facc15', false], ['Pyramids FC', 'PYR', 79, '#38bdf8', '#1e3a8a', true],
           ['Zamalek SC', 'ZAM', 79, '#ffffff', '#dc2626', true], ['Al Masry SC', 'MAS', 76, '#15803d', '#ffffff', false],
@@ -855,8 +929,7 @@
         ]
       },
       {
-        id: 'tun', country: 'Tunisie', league: 'Ligue 1', flag: '🇹🇳', c1: '#dc2626', c2: '#ffffff', textDark: false,
-        starsPool: ['Youcef Belaïli', 'Yan Sasse', 'Rodrigo Rodrigues', 'Hamza Khadhraoui', 'Firas Chaouat', 'Hazem Mastouri'],
+        id: 'tun', country: 'Tunisie', league: 'Ligue 1', flag: '🇹🇳',
         clubs: [
           ['Espérance de Tunis', 'EST', 79, '#dc2626', '#facc15', false], ['Club Africain', 'CA', 77, '#dc2626', '#ffffff', false],
           ['Étoile du Sahel', 'ESS', 77, '#dc2626', '#ffffff', false], ['CS Sfaxien', 'CSS', 76, '#09090b', '#ffffff', false],
@@ -869,8 +942,7 @@
         ]
       },
       {
-        id: 'alg', country: 'Algérie', league: 'Ligue 1', flag: '🇩🇿', c1: '#15803d', c2: '#dc2626', textDark: false,
-        starsPool: ['Andy Delort', 'Islam Slimani', 'Ryad Boudebouz', 'Zakaria Naidji', 'Aymen Mahious', 'Kouceila Boualia'],
+        id: 'alg', country: 'Algérie', league: 'Ligue 1', flag: '🇩🇿',
         clubs: [
           ['MC Alger', 'MCA', 78, '#15803d', '#dc2626', false], ['CR Belouizdad', 'CRB', 78, '#dc2626', '#ffffff', false],
           ['USM Alger', 'USMA', 77, '#dc2626', '#09090b', false], ['JS Kabylie', 'JSK', 77, '#facc15', '#15803d', true],
@@ -883,8 +955,7 @@
         ]
       },
       {
-        id: 'rsa', country: 'Afrique du Sud', league: 'Betway Premiership', flag: '🇿🇦', c1: '#15803d', c2: '#facc15', textDark: false,
-        starsPool: ['Lucas Ribeiro', 'Peter Shalulile', 'Teboho Mokoena', 'Relebohile Mofokeng', 'Patrick Maswanganyi', 'Iqraam Rayners'],
+        id: 'rsa', country: 'Afrique du Sud', league: 'Betway Premiership', flag: '🇿🇦',
         clubs: [
           ['Mamelodi Sundowns', 'MSD', 79, '#facc15', '#15803d', true], ['Orlando Pirates', 'ORL', 78, '#09090b', '#ffffff', false],
           ['Kaizer Chiefs', 'KAI', 76, '#facc15', '#09090b', true], ['Stellenbosch FC', 'STE', 76, '#7f1d1d', '#ffffff', false],
@@ -897,8 +968,7 @@
         ]
       },
       {
-        id: 'ksa', country: 'Arabie saoudite', league: 'Saudi Pro League', flag: '🇸🇦', c1: '#15803d', c2: '#ffffff', textDark: false,
-        starsPool: ['Cristiano Ronaldo', 'Karim Benzema', 'Ollie Watkins', 'Sadio Mané', 'Ivan Toney', 'Riyad Mahrez', 'Pierre-Emerick Aubameyang', 'Moussa Diaby', 'João Félix'],
+        id: 'ksa', country: 'Arabie saoudite', league: 'Saudi Pro League', flag: '🇸🇦',
         clubs: [
           ['Al-Hilal SFC', 'HIL', 87, '#1d4ed8', '#ffffff', false], ['Al-Nassr FC', 'NAS', 85, '#facc15', '#1d4ed8', true],
           ['Al-Ittihad Club', 'ITT', 83, '#facc15', '#09090b', true], ['Al-Ahli Saudi', 'AHL', 83, '#15803d', '#ffffff', false],
@@ -912,8 +982,7 @@
         ]
       },
       {
-        id: 'bra', country: 'Brésil', league: 'Série A', flag: '🇧🇷', c1: '#15803d', c2: '#facc15', textDark: false,
-        starsPool: ['Pedro', 'Memphis Depay', 'Raphael Veiga', 'Hulk', 'Lucas Moura', 'Gerson', 'Jhon Arias', 'Luiz Henrique', 'Yuri Alberto', 'Oscar'],
+        id: 'bra', country: 'Brésil', league: 'Série A', flag: '🇧🇷',
         clubs: [
           ['Flamengo', 'FLA', 83, '#dc2626', '#09090b', false], ['Palmeiras', 'PAL', 82, '#15803d', '#ffffff', false],
           ['Botafogo', 'BOT', 82, '#09090b', '#ffffff', false], ['Corinthians', 'COR', 81, '#ffffff', '#09090b', true],
@@ -928,8 +997,7 @@
         ]
       },
       {
-        id: 'usa', country: 'États-Unis', league: 'MLS', flag: '🇺🇸', c1: '#1d4ed8', c2: '#dc2626', textDark: false,
-        starsPool: ['Lionel Messi', 'Luis Suárez', 'Riqui Puig', 'Denis Bouanga', 'Cucho Hernández', 'Christian Benteke', 'Marco Reus', 'Emil Forsberg', 'Rodrigo De Paul'],
+        id: 'usa', country: 'États-Unis', league: 'MLS', flag: '🇺🇸',
         clubs: [
           ['Inter Miami CF', 'MIA', 83, '#f472b6', '#09090b', true], ['LA Galaxy', 'LAG', 79, '#ffffff', '#1e3a8a', true],
           ['Los Angeles FC', 'LAFC', 79, '#09090b', '#facc15', false], ['Columbus Crew', 'CLB', 78, '#facc15', '#09090b', true],
@@ -949,8 +1017,7 @@
         ]
       },
       {
-        id: 'mex', country: 'Mexique', league: 'Liga MX', flag: '🇲🇽', c1: '#15803d', c2: '#dc2626', textDark: false,
-        starsPool: ['Henry Martín', 'André-Pierre Gignac', 'Sergio Canales', 'Paulinho', 'Salomón Rondón', 'Alexis Vega', 'Álvaro Fidalgo'],
+        id: 'mex', country: 'Mexique', league: 'Liga MX', flag: '🇲🇽',
         clubs: [
           ['Club América', 'AME', 80, '#facc15', '#1e3a8a', true], ['CF Monterrey', 'MTY', 79, '#1e3a8a', '#ffffff', false],
           ['Tigres UANL', 'TIG', 79, '#facc15', '#1d4ed8', true], ['Cruz Azul', 'CAZ', 79, '#1d4ed8', '#ffffff', false],
@@ -964,8 +1031,7 @@
         ]
       },
       {
-        id: 'qat', country: 'Qatar', league: 'Stars League', flag: '🇶🇦', c1: '#7f1d1d', c2: '#ffffff', textDark: false,
-        starsPool: ['Akram Afif', 'Almoez Ali', 'Michael Olunga', 'Julian Draxler', 'Marco Verratti', 'Rodrigo Moreno'],
+        id: 'qat', country: 'Qatar', league: 'Stars League', flag: '🇶🇦',
         clubs: [
           ['Al-Sadd SC', 'SAD', 79, '#ffffff', '#09090b', true], ['Al-Duhail SC', 'DUH', 78, '#dc2626', '#1e3a8a', false],
           ['Al-Gharafa SC', 'GHA', 77, '#facc15', '#1d4ed8', true], ['Al-Rayyan SC', 'RAY', 77, '#dc2626', '#09090b', false],
@@ -977,17 +1043,20 @@
       }
     ];
 
-    // Construction plate de CLUBS_DB à partir des 31 blocs championnats (510 clubs)
+    function getClubOwnStars(name, short) {
+      if (CLUB_STARS_MAP[name]) return CLUB_STARS_MAP[name];
+      return [
+        `Avant-centre ${short}`,
+        `Ailier ${short}`,
+        `Meneur ${short}`,
+        `Capitaine ${short}`
+      ];
+    }
+
     const CLUBS_DB = [];
     LEAGUES_DATA.forEach(lg => {
       lg.clubs.forEach((c, idx) => {
         const [name, short, ovr, c1, c2, textDark] = c;
-        const rotatedStars = [
-          lg.starsPool[idx % lg.starsPool.length],
-          lg.starsPool[(idx + 1) % lg.starsPool.length],
-          lg.starsPool[(idx + 2) % lg.starsPool.length],
-          lg.starsPool[(idx + 3) % lg.starsPool.length]
-        ];
         CLUBS_DB.push({
           id: `${lg.id}_${idx}`,
           leagueId: lg.id,
@@ -1001,41 +1070,26 @@
           c1,
           c2,
           textDark,
-          stars: rotatedStars
+          stars: getClubOwnStars(name, short)
         });
       });
     });
 
-    /**
-     * ============================================================================
-     * ÉTAT GLOBAL DE L'APPLICATION
-     * ============================================================================
-     */
     let state = {
       club1: CLUBS_DB.find(c => c.name === 'Real Madrid'),
       club2: CLUBS_DB.find(c => c.name === 'Paris Saint-Germain'),
       activeLeague1: 'esp',
       activeLeague2: 'fra',
-      bet1: null, // 'home' | 'draw' | 'away' | null
-      bet2: null, // 'over25' | 'under25' | 'btts' | null
+      bet1: null,
+      bet2: null,
       launchesUsed: 0,
       maxLaunches: 2,
       isSimulating: false,
       soundEnabled: true,
-      stats: {
-        points: 0,
-        streak: 0,
-        totalBets: 0,
-        wonBets: 0
-      },
+      stats: { points: 0, streak: 0, totalBets: 0, wonBets: 0 },
       history: []
     };
 
-    /**
-     * ============================================================================
-     * AUDIO (Tone.js)
-     * ============================================================================
-     */
     function playSound(type) {
       if (!state.soundEnabled || typeof Tone === 'undefined') return;
       try {
@@ -1065,11 +1119,6 @@
       showToast(state.soundEnabled ? 'Effets sonores activés' : 'Effets sonores coupés', '🔊');
     }
 
-    /**
-     * ============================================================================
-     * BLASONS SVG DYNAMIQUES
-     * ============================================================================
-     */
     function getClubBadgeSVG(club, sizeClass = 'w-14 h-14') {
       const textColor = club.textDark ? '#0f172a' : '#ffffff';
       const strokeColor = club.textDark ? 'rgba(15,23,42,0.25)' : 'rgba(255,255,255,0.35)';
@@ -1094,11 +1143,6 @@
       `;
     }
 
-    /**
-     * ============================================================================
-     * INITIALISATION & RENDU DES BLOCS CHAMPIONNATS (31 PAYS)
-     * ============================================================================
-     */
     function initApp() {
       document.getElementById('headerSubtitle').textContent =
         `${LEAGUES_DATA.length} pays • ${CLUBS_DB.length} clubs • Sélection par blocs • 2 pronostics par duel`;
@@ -1213,11 +1257,6 @@
       }).join('');
     }
 
-    /**
-     * ============================================================================
-     * SÉLECTION DE CLUBS & RÉINITIALISATION DU COMPTEUR DE 2 LANCEMENTS
-     * ============================================================================
-     */
     function resetDuelSession() {
       state.launchesUsed = 0;
       resetCenterToReady();
@@ -1328,7 +1367,6 @@
       const c1 = state.club1;
       const c2 = state.club2;
 
-      // Vrai nom des clubs dans les badges d'en-tête de colonne
       document.getElementById('homeHeaderBadge').textContent = `🏠 ${c1.name.toUpperCase()} • DOMICILE`;
       document.getElementById('awayHeaderBadge').textContent = `✈️ ${c2.name.toUpperCase()} • EXTÉRIEUR`;
 
@@ -1353,11 +1391,6 @@
       document.getElementById('awayCardWrapper').classList.remove('fut-card-winner');
     }
 
-    /**
-     * ============================================================================
-     * DOUBLE PRONOSTIC
-     * ============================================================================
-     */
     function selectBet1(choice) {
       if (state.isSimulating) return;
       state.bet1 = state.bet1 === choice ? null : choice;
@@ -1400,11 +1433,6 @@
       document.getElementById('stateResult').classList.add('hidden');
     }
 
-    /**
-     * ============================================================================
-     * LIMITE STRICTE DE 2 LANCEMENTS PAR DUEL & CHRONO 3 SECONDES
-     * ============================================================================
-     */
     function updateLaunchCounterUI() {
       const remaining = Math.max(0, state.maxLaunches - state.launchesUsed);
       const counterEl = document.getElementById('launchCounterText');
@@ -1678,11 +1706,6 @@
       }
     }
 
-    /**
-     * ============================================================================
-     * HISTORIQUE
-     * ============================================================================
-     */
     function addToHistory(c1, s1, c2, s2, outcome, stats) {
       state.history.unshift({ c1, s1, c2, s2, outcome, stats });
       if (state.history.length > 9) state.history.pop();
@@ -1749,4 +1772,3 @@
   </script>
 </body>
 </html>
-
