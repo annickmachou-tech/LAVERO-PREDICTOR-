@@ -361,3 +361,194 @@
                 </div>
               </div>
               </div>
+                </div>
+
+        </div>
+
+        <!-- Bouton Principal -->
+        <div class="relative z-10 space-y-2">
+          <button id="launchDuelBtn" onclick="startDuel()"
+            class="w-full py-4 px-6 rounded-2xl font-display text-2xl sm:text-3xl font-bold uppercase tracking-wider text-slate-950 bg-gradient-to-r from-cyan-400 via-sky-300 to-amber-300 hover:brightness-110 active:scale-[0.98] transition-all shadow-lg animate-glow flex items-center justify-center gap-3 cursor-pointer">
+            <span>⚡ LANCER LE DUEL (3s)</span>
+          </button>
+
+          <button id="nextDuelBtn" onclick="randomizeBoth()"
+            class="hidden w-full py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 border border-purple-400/40 transition cursor-pointer">
+            🔄 Changer de duel (2 lancements débloqués)
+          </button>
+        </div>
+      </div>
+
+      <!-- CLUB 2 -->
+      <div id="awayCardWrapper" class="lg:col-span-4 fut-card rounded-3xl p-5 flex flex-col justify-between transition-all duration-300">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-500/15 text-purple-300 border border-purple-400/30">
+              ✈️ Club 2 • Extérieur
+            </span>
+            <button onclick="pickRandomClub(2)" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-purple-500/25 text-white border border-white/10 transition flex items-center gap-1.5">
+              <span>Aléatoire</span> <span>🎲</span>
+            </button>
+          </div>
+
+          <div id="awaySelectedDisplay" class="relative rounded-2xl p-4 mb-4 overflow-hidden border border-white/15 transition-all duration-300"></div>
+
+          <div class="space-y-2.5">
+            <div class="relative">
+              <input type="text" id="search2" oninput="renderClubList(2)" placeholder="Rechercher parmi 510 clubs..."
+                class="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-950/80 border border-white/10 focus:border-purple-400 focus:outline-none text-sm text-white placeholder-slate-500">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <select id="leagueFilter2" onchange="renderClubList(2)"
+              class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-white/10 focus:border-purple-400 focus:outline-none text-xs font-medium text-slate-200"></select>
+          </div>
+        </div>
+
+        <div id="clubList2" class="club-list mt-3 max-h-56 overflow-y-auto space-y-1.5 pr-1"></div>
+      </div>
+
+    </section>
+
+    <!-- HISTORIQUE -->
+    <section class="fut-card rounded-3xl p-5 sm:p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-6 rounded-full bg-gradient-to-b from-cyan-400 to-purple-500"></span>
+          <h3 class="font-display text-2xl font-bold uppercase tracking-wide text-white">
+            Historique des Confrontations Récentes
+          </h3>
+        </div>
+        <button onclick="clearHistory()" class="text-xs text-slate-400 hover:text-rose-400 transition">
+          Effacer l'historique
+        </button>
+      </div>
+
+      <div id="matchHistoryContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div class="col-span-full text-center py-8 text-sm text-slate-500 border border-dashed border-white/10 rounded-2xl">
+          Aucun duel disputé pour le moment. Choisissez deux clubs et lancez le chrono de 3 secondes !
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toastMessage" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-slate-900 border border-cyan-400/50 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-medium">
+      <span id="toastIcon">⚽</span>
+      <span id="toastText">Notification</span>
+    </div>
+  </div>
+
+  <script>
+    const MAX_LAUNCHES_PER_DUEL = 2;
+
+    const FEATURED_CLUBS = [
+      { id: 'rma', name: 'Real Madrid', short: 'RMA', league: 'Espagne (LaLiga)', country: 'Espagne', flag: '🇪🇸', ovr: 93, c1: '#ffffff', c2: '#eab308', textDark: true, stars: ['Mbappé', 'Vinícius Jr', 'Bellingham', 'Alexander-Arnold', 'Valverde'] },
+      { id: 'fcb', name: 'FC Barcelone', short: 'BAR', league: 'Espagne (LaLiga)', country: 'Espagne', flag: '🇪🇸', ovr: 91, c1: '#1d4ed8', c2: '#b91c1c', textDark: false, stars: ['Lamine Yamal', 'Raphinha', 'Rodri', 'Pedri', 'Dani Olmo'] },
+      { id: 'psg', name: 'Paris Saint-Germain', short: 'PSG', league: 'France (Ligue 1)', country: 'France', flag: '🇫🇷', ovr: 90, c1: '#0f172a', c2: '#dc2626', textDark: false, stars: ['Ousmane Dembélé', 'Kvaratskhelia', 'Désiré Doué', 'Vitinha', 'Hakimi'] },
+      { id: 'mci', name: 'Manchester City', short: 'MCI', league: 'Angleterre (Premier League)', country: 'Angleterre', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', ovr: 92, c1: '#38bdf8', c2: '#1e3a8a', textDark: true, stars: ['Erling Haaland', 'Phil Foden', 'Rayan Cherki', 'Jérémy Doku', 'Donnarumma'] },
+      { id: 'liv', name: 'Liverpool', short: 'LIV', league: 'Angleterre (Premier League)', country: 'Angleterre', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', ovr: 92, c1: '#b91c1c', c2: '#f59e0b', textDark: false, stars: ['Alexander Isak', 'Florian Wirtz', 'Bradley Barcola', 'Mac Allister', 'Van Dijk'] },
+      { id: 'ars', name: 'Arsenal', short: 'ARS', league: 'Angleterre (Premier League)', country: 'Angleterre', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', ovr: 90, c1: '#dc2626', c2: '#ffffff', textDark: false, stars: ['Bukayo Saka', 'Martin Ødegaard', 'Declan Rice', 'William Saliba'] },
+      { id: 'bay', name: 'Bayern Munich', short: 'BAY', league: 'Allemagne (Bundesliga)', country: 'Allemagne', flag: '🇩🇪', ovr: 91, c1: '#dc2626', c2: '#ffffff', textDark: false, stars: ['Harry Kane', 'Jamal Musiala', 'Michael Olise', 'Luis Díaz', 'Kimmich'] },
+      { id: 'int', name: 'Inter Milan', short: 'INT', league: 'Italie (Serie A)', country: 'Italie', flag: '🇮🇹', ovr: 89, c1: '#1d4ed8', c2: '#09090b', textDark: false, stars: ['Lautaro Martínez', 'Marcus Thuram', 'Nicolò Barella', 'Dimarco'] },
+      { id: 'ahl', name: 'Al Ahly', short: 'AHL', league: 'Afrique (CAF)', country: 'Égypte', flag: '🇪🇬', ovr: 81, c1: '#dc2626', c2: '#facc15', textDark: false, stars: ['Wessam Abou Ali', 'Emam Ashour', 'Achraf Bencharki', 'Trezeguet'] },
+      { id: 'wac', name: 'Wydad AC', short: 'WAC', league: 'Afrique (CAF)', country: 'Maroc', flag: '🇲🇦', ovr: 78, c1: '#dc2626', c2: '#ffffff', textDark: false, stars: ['Mohamed Rayhi', 'Cassius Mailula', 'Oussama Zemraoui'] },
+      { id: 'asec', name: 'ASEC Mimosas', short: 'ASEC', league: 'Afrique (CAF)', country: "Côte d'Ivoire", flag: '🇨🇮', ovr: 77, c1: '#facc15', c2: '#09090b', textDark: true, stars: ['Salifou Diarrassouba', 'Essis Aka', 'Célestin Ecua'] },
+      { id: 'fla', name: 'Flamengo', short: 'FLA', league: 'Amériques (Brésil, Argentine, MLS)', country: 'Brésil', flag: '🇧🇷', ovr: 83, c1: '#dc2626', c2: '#09090b', textDark: false, stars: ['Pedro', 'De Arrascaeta', 'Gerson', 'Luiz Araújo'] },
+      { id: 'riv', name: 'River Plate', short: 'RIV', league: 'Amériques (Brésil, Argentine, MLS)', country: 'Argentine', flag: '🇦🇷', ovr: 82, c1: '#ffffff', c2: '#dc2626', textDark: true, stars: ['Miguel Borja', 'Facundo Colidio', 'Sebastián Driussi'] },
+      { id: 'hil', name: 'Al-Hilal', short: 'HIL', league: 'Asie & Moyen-Orient', country: 'Arabie Saoudite', flag: '🇸🇦', ovr: 87, c1: '#1d4ed8', c2: '#ffffff', textDark: false, stars: ['Ollie Watkins', 'Gabriel Martinelli', 'Theo Hernández', 'Bounou'] }
+    ];
+
+    const COUNTRIES_31 = [
+      { country: 'Espagne', flag: '🇪🇸', league: 'Espagne (LaLiga)', baseOvr: 80, c1: '#dc2626', c2: '#facc15', textDark: false },
+      { country: 'Angleterre', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', league: 'Angleterre (Premier League)', baseOvr: 81, c1: '#1d4ed8', c2: '#f8fafc', textDark: false },
+      { country: 'France', flag: '🇫🇷', league: 'France (Ligue 1)', baseOvr: 79, c1: '#1e3a8a', c2: '#dc2626', textDark: false },
+      { country: 'Italie', flag: '🇮🇹', league: 'Italie (Serie A)', baseOvr: 80, c1: '#0284c7', c2: '#ffffff', textDark: false },
+      { country: 'Allemagne', flag: '🇩🇪', league: 'Allemagne (Bundesliga)', baseOvr: 80, c1: '#09090b', c2: '#facc15', textDark: false },
+      { country: 'Portugal', flag: '🇵🇹', league: 'Portugal & Pays-Bas', baseOvr: 78, c1: '#15803d', c2: '#dc2626', textDark: false },
+      { country: 'Pays-Bas', flag: '🇳🇱', league: 'Portugal & Pays-Bas', baseOvr: 78, c1: '#ea580c', c2: '#ffffff', textDark: false },
+      { country: 'Brésil', flag: '🇧🇷', league: 'Amériques (Brésil, Argentine, MLS)', baseOvr: 78, c1: '#15803d', c2: '#facc15', textDark: false },
+      { country: 'Argentine', flag: '🇦🇷', league: 'Amériques (Brésil, Argentine, MLS)', baseOvr: 77, c1: '#38bdf8', c2: '#ffffff', textDark: true },
+      { country: 'États-Unis', flag: '🇺🇸', league: 'Amériques (Brésil, Argentine, MLS)', baseOvr: 76, c1: '#1e3a8a', c2: '#dc2626', textDark: false },
+      { country: 'Mexique', flag: '🇲🇽', league: 'Amériques (Brésil, Argentine, MLS)', baseOvr: 75, c1: '#15803d', c2: '#dc2626', textDark: false },
+      { country: 'Colombie', flag: '🇨🇴', league: 'Amériques (Brésil, Argentine, MLS)', baseOvr: 74, c1: '#facc15', c2: '#1d4ed8', textDark: true },
+      { country: 'Uruguay', flag: '🇺🇾', league: 'Amériques (Brésil, Argentine, MLS)', baseOvr: 74, c1: '#0284c7', c2: '#09090b', textDark: false },
+      { country: 'Égypte', flag: '🇪🇬', league: 'Afrique (CAF)', baseOvr: 75, c1: '#dc2626', c2: '#09090b', textDark: false },
+      { country: 'Maroc', flag: '🇲🇦', league: 'Afrique (CAF)', baseOvr: 75, c1: '#b91c1c', c2: '#15803d', textDark: false },
+      { country: "Côte d'Ivoire", flag: '🇨🇮', league: 'Afrique (CAF)', baseOvr: 74, c1: '#f97316', c2: '#15803d', textDark: false },
+      { country: 'Tunisie', flag: '🇹🇳', league: 'Afrique (CAF)', baseOvr: 74, c1: '#dc2626', c2: '#ffffff', textDark: false },
+      { country: 'Afrique du Sud', flag: '🇿🇦', league: 'Afrique (CAF)', baseOvr: 74, c1: '#15803d', c2: '#facc15', textDark: false },
+      { country: 'Algérie', flag: '🇩🇿', league: 'Afrique (CAF)', baseOvr: 73, c1: '#15803d', c2: '#ffffff', textDark: false },
+      { country: 'Sénégal', flag: '🇸🇳', league: 'Afrique (CAF)', baseOvr: 73, c1: '#15803d', c2: '#facc15', textDark: false },
+      { country: 'RD Congo', flag: '🇨🇩', league: 'Afrique (CAF)', baseOvr: 72, c1: '#1d4ed8', c2: '#facc15', textDark: false },
+      { country: 'Cameroun', flag: '🇨🇲', league: 'Afrique (CAF)', baseOvr: 72, c1: '#15803d', c2: '#dc2626', textDark: false },
+      { country: 'Nigeria', flag: '🇳🇬', league: 'Afrique (CAF)', baseOvr: 72, c1: '#15803d', c2: '#ffffff', textDark: false },
+      { country: 'Arabie Saoudite', flag: '🇸🇦', league: 'Asie & Moyen-Orient', baseOvr: 76, c1: '#15803d', c2: '#ffffff', textDark: false },
+      { country: 'Japon', flag: '🇯🇵', league: 'Asie & Moyen-Orient', baseOvr: 75, c1: '#dc2626', c2: '#ffffff', textDark: false },
+      { country: 'Corée du Sud', flag: '🇰🇷', league: 'Asie & Moyen-Orient', baseOvr: 74, c1: '#dc2626', c2: '#1d4ed8', textDark: false },
+      { country: 'Émirats Arabes Unis', flag: '🇦🇪', league: 'Asie & Moyen-Orient', baseOvr: 73, c1: '#15803d', c2: '#09090b', textDark: false },
+      { country: 'Belgique', flag: '🇧🇪', league: 'Autres Ligues Européennes', baseOvr: 75, c1: '#dc2626', c2: '#09090b', textDark: false },
+      { country: 'Turquie', flag: '🇹🇷', league: 'Autres Ligues Européennes', baseOvr: 75, c1: '#dc2626', c2: '#facc15', textDark: false },
+      { country: 'Écosse', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', league: 'Autres Ligues Européennes', baseOvr: 74, c1: '#1d4ed8', c2: '#ffffff', textDark: false },
+      { country: 'Suisse', flag: '🇨🇭', league: 'Autres Ligues Européennes', baseOvr: 73, c1: '#dc2626', c2: '#ffffff', textDark: false }
+    ];
+
+    function build510ClubsCatalog() {
+      const catalog = [...FEATURED_CLUBS];
+      let counter = 1;
+      for (const meta of COUNTRIES_31) {
+        const countForCountry = counter <= 15 ? 17 : 16;
+        if (catalog.length + countForCountry > 510) break;
+        for (let i = 1; i <= countForCountry && catalog.length < 510; i++) {
+          const suffix = String(i).padStart(2, '0');
+          const id = `cl_${meta.country.toLowerCase().replace(/[^a-z]/g, '')}_${i}`;
+          const name = `${meta.country} Club ${suffix}`;
+          const short = meta.country.slice(0, 2).toUpperCase() + suffix;
+          const ovr = Math.min(86, Math.max(68, meta.baseOvr - Math.floor(i / 3) + ((i + counter) % 3)));
+          catalog.push({
+            id,
+            name,
+            short,
+            league: meta.league,
+            country: meta.country,
+            flag: meta.flag,
+            ovr,
+            c1: meta.c1,
+            c2: meta.c2,
+            textDark: meta.textDark,
+            stars: [`Attaquant ${suffix}`, `Meneur ${suffix}`, `Ailier ${suffix}`]
+          });
+        }
+        counter++;
+      }
+      return catalog.slice(0, 510);
+    }
+
+    const CLUBS_DB = build510ClubsCatalog();
+
+    let state = {
+      club1: CLUBS_DB.find(c => c.id === 'rma') || CLUBS_DB[0],
+      club2: CLUBS_DB.find(c => c.id === 'psg') || CLUBS_DB[1],
+      currentBet: null,
+      isSimulating: false,
+      soundEnabled: true,
+      launchesUsedForCurrentDuel: 0,
+      stats: { points: 0, streak: 0, totalBets: 0, wonBets: 0 },
+      history: []
+    };
+
+    function getDuelKey(c1, c2) {
+      return `${c1.id}__${c2.id}`;
+    }
+
+    let currentDuelKey = getDuelKey(state.club1, state.club2);
+
+    function syncDuelLimitUI() {
+      const newKey = getDuelKey(state.club1, state.club2);
+      if (newKey !== currentDuelKey) {
+        currentDuelKey = newKey;
+        state.launchesUsedForCurrentDuel = 0;
+      }
