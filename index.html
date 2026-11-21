@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LAVERO PREDICTOR — Saison 2026-2027 (31 Pays • 510 Clubs)</title>
+  <title>LAVERO PREDICTOR — Saison 2026-2027</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <style>
@@ -26,7 +26,7 @@
       </div>
       <div>
         <h1 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight leading-none">LAVERO PREDICTOR</h1>
-        <p class="text-xs text-cyan-300 font-semibold mt-1">SAISON 2026/27 • 31 PAYS • 510 CLUBS</p>
+        <p class="text-xs text-cyan-300 font-semibold mt-1">SAISON 2026/27 • CLUBS RÉELS & STATS COMPLÈTES</p>
       </div>
     </div>
     <button id="randomMatchBtn" type="button" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition text-xs font-bold shadow">
@@ -47,17 +47,46 @@
       </div>
     </section>
 
-    <!-- Carte Duel, Badges Dynamiques & Double Pronostic -->
+    <!-- Carte Duel, Effectifs, Tableau des Stats & Pronostics libres -->
     <section class="bg-slate-900/85 border border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl space-y-5">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div id="club1Card" class="bg-slate-950/80 border border-cyan-500/20 rounded-2xl p-4 space-y-2.5"></div>
         <div id="club2Card" class="bg-slate-950/80 border border-purple-500/20 rounded-2xl p-4 space-y-2.5"></div>
       </div>
 
-      <!-- Double Pronostic sur ce duel -->
+      <!-- Tableau de duel : Score + Corners + Tirs cadrés + Cartons -->
+      <div class="bg-slate-950 border border-white/15 rounded-2xl p-4 space-y-3">
+        <div class="flex items-center justify-between text-xs">
+          <span class="uppercase tracking-wider text-cyan-300 font-bold">📊 Tableau du Duel</span>
+          <span id="duelLiveLabel" class="text-slate-400 font-semibold">En attente du coup d'envoi</span>
+        </div>
+
+        <div class="grid grid-cols-3 items-center text-center gap-2 py-2 bg-slate-900/80 rounded-xl border border-white/5">
+          <div id="scoreClub1Name" class="font-bold text-xs sm:text-sm text-cyan-200 px-2 truncate">Real Madrid</div>
+          <div id="scoreBoardValue" class="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-wider">0 - 0</div>
+          <div id="scoreClub2Name" class="font-bold text-xs sm:text-sm text-purple-200 px-2 truncate">Paris Saint-Germain</div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-center text-xs">
+          <div class="bg-slate-900/70 border border-white/10 rounded-xl p-2.5">
+            <div class="text-[10px] text-slate-400 uppercase font-bold">🚩 Corners</div>
+            <div id="statCorners" class="font-display font-bold text-sm text-white mt-0.5">- / -</div>
+          </div>
+          <div class="bg-slate-900/70 border border-white/10 rounded-xl p-2.5">
+            <div class="text-[10px] text-slate-400 uppercase font-bold">🎯 Tirs cadrés</div>
+            <div id="statShots" class="font-display font-bold text-sm text-white mt-0.5">- / -</div>
+          </div>
+          <div class="bg-slate-900/70 border border-white/10 rounded-xl p-2.5">
+            <div class="text-[10px] text-slate-400 uppercase font-bold">🟨 Cartons</div>
+            <div id="statCards" class="font-display font-bold text-sm text-amber-300 mt-0.5">- / -</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Côté Pronostics : choix libre de l'utilisateur -->
       <div class="bg-slate-950/90 border border-cyan-400/20 rounded-2xl p-4 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <h2 class="text-xs uppercase tracking-wider text-amber-300 font-bold">★ TES 2 PRONOSTICS SUR CE DUEL</h2>
+          <h2 class="text-xs uppercase tracking-wider text-amber-300 font-bold">★ TES PRONOSTICS (CHOIX LIBRE)</h2>
           <span id="launchCounterBadge" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-900 border border-white/10 text-cyan-300">
             Lancements sur ce duel : 0 / 2 utilisés • 2 restants
           </span>
@@ -67,19 +96,28 @@
           <div>
             <label for="pred1Select" class="block text-[11px] text-slate-300 font-bold mb-1">Pronostic 1 • Issue du match</label>
             <select id="pred1Select" class="w-full bg-slate-900 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
-              <option value="HOME">Victoire Domicile (1)</option>
-              <option value="DRAW">Match Nul (N)</option>
-              <option value="AWAY">Victoire Extérieur (2)</option>
+              <option value="Aucun (libre)">-- Choisir / Libre --</option>
+              <option value="Victoire Domicile (1)">Victoire Domicile (1)</option>
+              <option value="Match Nul (N)">Match Nul (N)</option>
+              <option value="Victoire Extérieur (2)">Victoire Extérieur (2)</option>
             </select>
           </div>
           <div>
-            <label for="pred2Select" class="block text-[11px] text-slate-300 font-bold mb-1">Pronostic 2 • Buts & Scénario</label>
+            <label for="pred2Select" class="block text-[11px] text-slate-300 font-bold mb-1">Pronostic 2 • Buts / Stats</label>
             <select id="pred2Select" class="w-full bg-slate-900 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-purple-400">
+              <option value="Aucun (libre)">-- Choisir / Libre --</option>
               <option value="+2.5 Buts">+2.5 Buts</option>
               <option value="-2.5 Buts">-2.5 Buts</option>
               <option value="Oui (BTTS)">Oui (BTTS)</option>
+              <option value="+8.5 Corners">+8.5 Corners</option>
+              <option value="+3.5 Cartons">+3.5 Cartons</option>
             </select>
           </div>
+        </div>
+
+        <div>
+          <label for="customPronoInput" class="block text-[11px] text-slate-300 font-bold mb-1">Ton pronostic perso (optionnel)</label>
+          <input id="customPronoInput" type="text" placeholder="Ex : Score exact 2-1, Mbappé buteur, +4 cartons..." class="w-full bg-slate-900 border border-white/15 rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400" />
         </div>
       </div>
 
@@ -92,13 +130,13 @@
       </div>
     </section>
 
-    <!-- Recherche rapide & Blocs Championnats (31 PAYS, 2 colonnes + liste du championnat sélectionné) -->
+    <!-- Recherche rapide & Blocs Championnats -->
     <section class="bg-slate-900/80 border border-white/10 rounded-3xl p-4 sm:p-5 space-y-4">
       <input id="searchInput" type="text" placeholder="🔍 Recherche rapide (club, pays, championnat, joueur)..." class="w-full bg-slate-950 border border-white/15 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-cyan-400" />
       <div>
         <div class="flex items-center justify-between gap-2 mb-3">
-          <h2 class="text-xs uppercase tracking-wider text-cyan-300 font-bold">🌍 BLOCS CHAMPIONNATS (31 PAYS)</h2>
-          <span class="text-[11px] text-slate-400 font-semibold">510 clubs total</span>
+          <h2 class="text-xs uppercase tracking-wider text-cyan-300 font-bold">🌍 BLOCS CHAMPIONNATS</h2>
+          <span id="totalClubsCounter" class="text-[11px] text-slate-400 font-semibold"></span>
         </div>
         <div id="leaguesGrid" class="grid grid-cols-2 gap-2.5"></div>
       </div>
@@ -109,7 +147,7 @@
           <h3 id="selectedLeagueTitle" class="text-xs uppercase tracking-wider text-cyan-300 font-bold">Clubs du championnat</h3>
           <span id="selectedLeagueCount" class="text-[11px] text-slate-400 font-bold"></span>
         </div>
-        <div id="selectedLeagueClubs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+        <div id="selectedLeagueClubs" class="grid grid-cols-2 gap-2"></div>
       </div>
     </section>
 
@@ -159,65 +197,161 @@
       'MC Alger': ['Andy Delort', 'Zakaria Naidji', 'Ayoub Abdellaoui', 'Oussama Benbot']
     };
 
-    // 31 championnats calibrés pour totaliser exactement 510 clubs
-    const LEAGUES_RAW = [
-      { flag: '🇪🇸', country: 'Espagne', league: 'LaLiga', count: 20, seed: ['Real Madrid', 'FC Barcelone', 'Atlético Madrid', 'Athletic Bilbao', 'Real Sociedad', 'Villarreal', 'Real Betis', 'Séville FC', 'Girona FC', 'Valence CF'] },
-      { flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', country: 'Angleterre', league: 'Premier League', count: 20, seed: ['Manchester City', 'Liverpool', 'Arsenal', 'Chelsea', 'Manchester United', 'Tottenham Hotspur', 'Newcastle United', 'Aston Villa', 'Brighton', 'West Ham United'] },
-      { flag: '🇮🇹', country: 'Italie', league: 'Serie A', count: 20, seed: ['Inter Milan', 'Napoli', 'AC Milan', 'Juventus', 'Atalanta', 'AS Roma', 'Lazio', 'Fiorentina', 'Bologna', 'Torino'] },
-      { flag: '🇫🇷', country: 'France', league: 'Ligue 1', count: 18, seed: ['Paris Saint-Germain', 'Olympique de Marseille', 'AS Monaco', 'Olympique Lyonnais', 'LOSC Lille', 'OGC Nice', 'RC Lens', 'Stade Rennais', 'Stade Brestois', 'RC Strasbourg'] },
-      { flag: '🇩🇪', country: 'Allemagne', league: 'Bundesliga', count: 18, seed: ['Bayern Munich', 'Borussia Dortmund', 'Bayer Leverkusen', 'RB Leipzig', 'VfB Stuttgart', 'Eintracht Frankfurt', 'SC Freiburg', 'VfL Wolfsburg', 'Borussia M\'gladbach', 'TSG Hoffenheim'] },
-      { flag: '🇳🇱', country: 'Pays-Bas', league: 'Eredivisie', count: 18, seed: ['PSV Eindhoven', 'Ajax Amsterdam', 'Feyenoord', 'AZ Alkmaar', 'FC Twente', 'FC Utrecht'] },
-      { flag: '🇹🇷', country: 'Turquie', league: 'Süper Lig', count: 18, seed: ['Galatasaray', 'Fenerbahçe', 'Beşiktaş', 'Trabzonspor', 'İstanbul Başakşehir', 'Samsunspor'] },
-      { flag: '🇧🇪', country: 'Belgique', league: 'Pro League', count: 16, seed: ['Club Bruges', 'RSC Anderlecht', 'Union Saint-Gilloise', 'KRC Genk', 'La Gantoise', 'Royal Antwerp'] },
-      { flag: '🇬🇷', country: 'Grèce', league: 'Super League', count: 14, seed: ['Olympiakos', 'PAOK Salonique', 'Panathinaïkos', 'AEK Athènes'] },
-      { flag: '🇨🇭', country: 'Suisse', league: 'Super League', count: 12, seed: ['BSC Young Boys', 'FC Bâle', 'Servette FC', 'FC Zurich'] },
-      { flag: '🇩🇰', country: 'Danemark', league: 'Superliga', count: 12, seed: ['FC Copenhague', 'FC Midtjylland', 'Brøndby IF', 'AGF Aarhus'] },
-      { flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', country: 'Écosse', league: 'Premiership', count: 12, seed: ['Celtic FC', 'Rangers FC', 'Heart of Midlothian', 'Aberdeen FC'] },
-      { flag: '🇳🇴', country: 'Norvège', league: 'Eliteserien', count: 16, seed: ['Bodø/Glimt', 'Molde FK', 'Rosenborg BK', 'SK Brann'] },
-      { flag: '🇸🇪', country: 'Suède', league: 'Allsvenskan', count: 16, seed: ['Malmö FF', 'AIK Solna', 'IF Elfsborg', 'Djurgårdens IF'] },
-      { flag: '🇦🇹', country: 'Autriche', league: 'Bundesliga', count: 12, seed: ['RB Salzbourg', 'Sturm Graz', 'Rapid Vienne', 'LASK'] },
-      { flag: '🇵🇱', country: 'Pologne', league: 'Ekstraklasa', count: 18, seed: ['Legia Varsovie', 'Lech Poznań', 'Raków Częstochowa', 'Jagiellonia Białystok'] },
-      { flag: '🇭🇷', country: 'Croatie', league: 'HNL', count: 10, seed: ['Dinamo Zagreb', 'Hajduk Split', 'HNK Rijeka', 'NK Osijek'] },
-      { flag: '🇷🇸', country: 'Serbie', league: 'SuperLiga', count: 16, seed: ['Étoile Rouge de Belgrade', 'Partizan Belgrade', 'TSC Bačka Topola', 'Vojvodina'] },
-      { flag: '🇺🇦', country: 'Ukraine', league: 'Premier League', count: 16, seed: ['Shakhtar Donetsk', 'Dynamo Kiev', 'Kryvbas', 'Polissya Zhytomyr'] },
-      { flag: '🇷🇴', country: 'Roumanie', league: 'Liga I', count: 16, seed: ['FCSB', 'CFR Cluj', 'Universitatea Craiova', 'Rapid Bucarest'] },
-      { flag: '🇨🇿', country: 'République tchèque', league: 'Chance Liga', count: 16, seed: ['Sparta Prague', 'Slavia Prague', 'Viktoria Plzeň', 'Baník Ostrava'] },
-      { flag: '🇧🇬', country: 'Bulgarie', league: 'First League', count: 16, seed: ['Ludogorets', 'CSKA Sofia', 'Levski Sofia', 'Cherno More'] },
-      { flag: '🇨🇮', country: 'Côte d\'Ivoire', league: 'Ligue 1 CIV', count: 16, seed: ['ASEC Mimosas', 'FC San Pedro', 'ST Abidjan', 'AFAD Djékanou', 'SOA', 'Bouaké FC'] },
-      { flag: '🇲🇦', country: 'Maroc', league: 'Botola Pro', count: 16, seed: ['Wydad AC', 'Raja CA', 'AS FAR Rabat', 'RS Berkane'] },
-      { flag: '🇪🇬', country: 'Égypte', league: 'Premier League', count: 18, seed: ['Al Ahly SC', 'Zamalek SC', 'Pyramids FC', 'Al Masry'] },
-      { flag: '🇹🇳', country: 'Tunisie', league: 'Ligue 1 PRO', count: 16, seed: ['Espérance de Tunis', 'Étoile du Sahel', 'Club Africain', 'CS Sfaxien'] },
-      { flag: '🇩🇿', country: 'Algérie', league: 'Ligue 1', count: 16, seed: ['MC Alger', 'CR Belouizdad', 'USM Alger', 'JS Kabylie'] },
-      { flag: '🇿🇦', country: 'Afrique du Sud', league: 'Betway Premiership', count: 16, seed: ['Mamelodi Sundowns', 'Orlando Pirates', 'Kaizer Chiefs', 'SuperSport United'] },
-      { flag: '🇸🇦', country: 'Arabie Saoudite', league: 'Saudi Pro League', count: 18, seed: ['Al-Hilal', 'Al-Nassr', 'Al-Ittihad', 'Al-Ahli Saudi'] },
-      { flag: '🇧🇷', country: 'Brésil', league: 'Brasileirão Série A', count: 20, seed: ['Flamengo', 'Palmeiras', 'Botafogo', 'São Paulo FC', 'Atlético Mineiro', 'Fluminense'] },
-      { flag: '🇲🇽', country: 'Mexique', league: 'Liga MX', count: 18, seed: ['Club América', 'Tigres UANL', 'CF Monterrey', 'CD Guadalajara', 'Cruz Azul', 'Deportivo Toluca'] }
-    ]; // Somme exacte : 510 clubs
-
-    const LEAGUES_META = LEAGUES_RAW.map((item, lIdx) => {
-      const clubs = [...item.seed];
-      let idx = 1;
-      while (clubs.length < item.count) {
-        const candidate = `${item.country.split(' ')[0]} Club ${lIdx + 1}-${idx}`;
-        if (!clubs.includes(candidate)) clubs.push(candidate);
-        idx += 1;
+    const LEAGUES_META = [
+      {
+        flag: '🇪🇸', country: 'Espagne', league: 'LaLiga',
+        clubs: [
+          'Real Madrid', 'FC Barcelone', 'Atlético Madrid', 'Athletic Bilbao', 'Real Sociedad',
+          'Villarreal', 'Real Betis', 'Séville FC', 'Girona FC', 'Valence CF',
+          'Celta Vigo', 'Osasuna', 'RCD Mallorca', 'Rayo Vallecano', 'Getafe CF',
+          'Deportivo Alavés', 'RCD Espanyol', 'UD Las Palmas', 'CD Leganés', 'Real Valladolid'
+        ]
+      },
+      {
+        flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', country: 'Angleterre', league: 'Premier League',
+        clubs: [
+          'Manchester City', 'Liverpool', 'Arsenal', 'Chelsea', 'Manchester United',
+          'Tottenham Hotspur', 'Newcastle United', 'Aston Villa', 'Brighton', 'West Ham United',
+          'Nottingham Forest', 'Bournemouth', 'Fulham', 'Brentford', 'Crystal Palace',
+          'Everton', 'Wolverhampton', 'Leicester City', 'Ipswich Town', 'Southampton'
+        ]
+      },
+      {
+        flag: '🇮🇹', country: 'Italie', league: 'Serie A',
+        clubs: [
+          'Inter Milan', 'Napoli', 'AC Milan', 'Juventus', 'Atalanta',
+          'AS Roma', 'Lazio', 'Fiorentina', 'Bologna', 'Torino',
+          'Udinese', 'Genoa', 'Como 1907', 'Parma', 'Cagliari',
+          'Hellas Vérone', 'Empoli', 'US Lecce', 'AC Monza', 'Venezia FC'
+        ]
+      },
+      {
+        flag: '🇫🇷', country: 'France', league: 'Ligue 1',
+        clubs: [
+          'Paris Saint-Germain', 'Olympique de Marseille', 'AS Monaco', 'Olympique Lyonnais', 'LOSC Lille',
+          'OGC Nice', 'RC Lens', 'Stade Rennais', 'Stade Brestois', 'RC Strasbourg',
+          'Stade de Reims', 'Toulouse FC', 'FC Nantes', 'AJ Auxerre', 'AS Saint-Étienne',
+          'Montpellier HSC', 'Angers SCO', 'Le Havre AC'
+        ]
+      },
+      {
+        flag: '🇩🇪', country: 'Allemagne', league: 'Bundesliga',
+        clubs: [
+          'Bayern Munich', 'Borussia Dortmund', 'Bayer Leverkusen', 'RB Leipzig', 'VfB Stuttgart',
+          'Eintracht Frankfurt', 'SC Freiburg', 'VfL Wolfsburg', 'Borussia M\'gladbach', 'TSG Hoffenheim',
+          'Werder Brême', 'FSV Mayence 05', 'Union Berlin', 'FC Augsbourg', 'VfL Bochum',
+          'FC Heidenheim', 'FC St. Pauli', 'Holstein Kiel'
+        ]
+      },
+      {
+        flag: '🇳🇱', country: 'Pays-Bas', league: 'Eredivisie',
+        clubs: [
+          'PSV Eindhoven', 'Ajax Amsterdam', 'Feyenoord', 'AZ Alkmaar', 'FC Twente',
+          'FC Utrecht', 'Go Ahead Eagles', 'SC Heerenveen', 'Sparta Rotterdam', 'NEC Nimègue',
+          'PEC Zwolle', 'Fortuna Sittard', 'Heracles Almelo', 'NAC Breda', 'Willem II',
+          'FC Groningen', 'RKC Waalwijk', 'Almere City'
+        ]
+      },
+      {
+        flag: '🇹🇷', country: 'Turquie', league: 'Süper Lig',
+        clubs: [
+          'Galatasaray', 'Fenerbahçe', 'Beşiktaş', 'Trabzonspor', 'İstanbul Başakşehir',
+          'Samsunspor', 'Göztepe', 'Eyüpspor', 'Kasımpaşa', 'Alanyaspor',
+          'Antalyaspor', 'Rizespor', 'Kayserispor', 'Sivasspor', 'Konyaspor',
+          'Gaziantep FK', 'Hatayspor', 'Adana Demirspor'
+        ]
+      },
+      {
+        flag: '🇧🇪', country: 'Belgique', league: 'Pro League',
+        clubs: [
+          'Club Bruges', 'RSC Anderlecht', 'Union Saint-Gilloise', 'KRC Genk', 'La Gantoise',
+          'Royal Antwerp', 'Standard de Liège', 'FC Malines', 'Cercle Bruges', 'Sporting Charleroi',
+          'Oud-Heverlee Louvain', 'KVC Westerlo', 'Saint-Trond', 'KV Courtrai', 'Beerschot VA',
+          'FCV Dender'
+        ]
+      },
+      {
+        flag: '🇨🇮', country: 'Côte d\'Ivoire', league: 'Ligue 1 CIV',
+        clubs: [
+          'ASEC Mimosas', 'FC San Pedro', 'ST Abidjan', 'AFAD Djékanou', 'SOA',
+          'Bouaké FC', 'FC Mouna', 'SOL FC', 'ISCA', 'Lys Sassandra',
+          'Racing Club d\'Abidjan', 'Zoman FC', 'ASI d\'Abengourou', 'CO Korhogo', 'ES Bafing',
+          'Stella Club d\'Adjamé'
+        ]
+      },
+      {
+        flag: '🇲🇦', country: 'Maroc', league: 'Botola Pro',
+        clubs: [
+          'Wydad AC', 'Raja CA', 'AS FAR Rabat', 'RS Berkane', 'FUS Rabat',
+          'MAS Fès', 'Olympic Safi', 'Difaa El Jadida', 'HUS Agadir', 'IR Tanger',
+          'SCC Mohammédia', 'Renaissance Zemamra', 'Chabab Mohammédia', 'JS Soualem', 'Moghreb Tétouan',
+          'Union Touarga'
+        ]
+      },
+      {
+        flag: '🇪🇬', country: 'Égypte', league: 'Premier League',
+        clubs: [
+          'Al Ahly SC', 'Zamalek SC', 'Pyramids FC', 'Al Masry', 'Modern Sport',
+          'Smouha SC', 'Al Ittihad Alexandria', 'ENPPI', 'Ceramica Cleopatra', 'ZED FC',
+          'Tala\'ea El Gaish', 'National Bank of Egypt', 'El Gouna', 'Ismaily SC', 'Pharco FC',
+          'Baladiyat El Mahalla', 'Haras El Hodoud', 'Petrojet'
+        ]
+      },
+      {
+        flag: '🇹🇳', country: 'Tunisie', league: 'Ligue 1 PRO',
+        clubs: [
+          'Espérance de Tunis', 'Étoile du Sahel', 'Club Africain', 'CS Sfaxien', 'US Monastir',
+          'Stade Tunisien', 'CA Bizertin', 'JS Omrane', 'ES Zarzis', 'Olympique Béja',
+          'AS Gabès', 'AS Soliman', 'EGS Gafsa', 'US Ben Guerdane', 'JS Kairouan',
+          'Avenir de la Marsa'
+        ]
+      },
+      {
+        flag: '🇩🇿', country: 'Algérie', league: 'Ligue 1',
+        clubs: [
+          'MC Alger', 'CR Belouizdad', 'USM Alger', 'JS Kabylie', 'CS Constantine',
+          'ES Sétif', 'Paradou AC', 'ASO Chlef', 'MC Oran', 'JS Saoura',
+          'USM Khenchela', 'NC Magra', 'ES Mostaganem', 'Olympique Akbou', 'MC El Bayadh',
+          'US Biskra'
+        ]
+      },
+      {
+        flag: '🇿🇦', country: 'Afrique du Sud', league: 'Betway Premiership',
+        clubs: [
+          'Mamelodi Sundowns', 'Orlando Pirates', 'Kaizer Chiefs', 'SuperSport United', 'Cape Town City',
+          'Stellenbosch FC', 'Sekhukhune United', 'AmaZulu FC', 'TS Galaxy', 'Chippa United',
+          'Polokwane City', 'Golden Arrows', 'Royal AM', 'Marumo Gallants', 'Richards Bay FC',
+          'Magesi FC'
+        ]
+      },
+      {
+        flag: '🇸🇦', country: 'Arabie Saoudite', league: 'Saudi Pro League',
+        clubs: [
+          'Al-Hilal', 'Al-Nassr', 'Al-Ittihad', 'Al-Ahli Saudi', 'Al-Qadsiah',
+          'Al-Taawoun', 'Al-Ettifaq', 'Al-Fateh', 'Al-Shabab', 'Al-Raed',
+          'Al-Wehda', 'Al-Khaleej', 'Damac FC', 'Al-Fayha', 'Al-Riyadh',
+          'Al-Kholood', 'Al-Orobah', 'Al-Okhdood'
+        ]
+      },
+      {
+        flag: '🇧🇷', country: 'Brésil', league: 'Brasileirão Série A',
+        clubs: [
+          'Flamengo', 'Palmeiras', 'Botafogo', 'São Paulo FC', 'Atlético Mineiro',
+          'Fluminense', 'Internacional', 'Grêmio', 'Corinthians', 'Cruzeiro',
+          'Fortaleza', 'Bahia', 'Athletico Paranaense', 'Red Bull Bragantino', 'Vasco da Gama',
+          'Santos FC', 'Ceará SC', 'Vitória', 'Cuiabá', 'Juventude'
+        ]
       }
-      return {
-        flag: item.flag,
-        country: item.country,
-        league: item.league,
-        clubs
-      };
-    });
+    ];
 
     const CLUB_STARS_MAP = {};
     LEAGUES_META.forEach(lg => {
       lg.clubs.forEach((club, cIdx) => {
         CLUB_STARS_MAP[club] = BASE_STARS_MAP[club] || [
-          `${club} Star A`,
-          `${club} Star B`,
-          `${lg.country} Talent ${cIdx + 1}`,
-          'Capitaine 26/27'
+          `${club} #9`,
+          `${club} #10`,
+          `${lg.country} Ailier ${cIdx + 1}`,
+          'Milieu Clé 26/27'
         ];
       });
     });
@@ -238,12 +372,11 @@
     };
 
     function getCurrentDuelLaunchCount() {
-      const key = getDuelKey(state.club1, state.club2);
-      return state.launchesByDuel[key] || 0;
+      return state.launchesByDuel[getDuelKey(state.club1, state.club2)] || 0;
     }
 
     function getClubBadgeSVG(name, sizeClass = 'w-9 h-9') {
-      const code = name.split(' ').map(w => w[0]).join('').slice(0, 3).toUpperCase();
+      const code = name.split(' ').filter(Boolean).map(w => w[0]).join('').slice(0, 3).toUpperCase();
       return `<div class="${sizeClass} rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 border border-white/15 flex items-center justify-center font-display font-extrabold text-xs text-cyan-300 shrink-0">${code}</div>`;
     }
 
@@ -258,6 +391,11 @@
       let sum = 0;
       for (let i = 0; i < clubName.length; i++) sum += clubName.charCodeAt(i);
       return 78 + (sum % 16);
+    }
+
+    function syncDuelScoreboardNames() {
+      document.getElementById('scoreClub1Name').textContent = state.club1;
+      document.getElementById('scoreClub2Name').textContent = state.club2;
     }
 
     function updateLaunchUI() {
@@ -313,6 +451,7 @@
         </div>
       `;
 
+      syncDuelScoreboardNames();
       updateLaunchUI();
     }
 
@@ -381,6 +520,8 @@
     function renderLeaguesGrid(filterText = '') {
       const q = filterText.trim().toLowerCase();
       const grid = document.getElementById('leaguesGrid');
+      document.getElementById('totalClubsCounter').textContent = `${LEAGUES_META.length} championnats • ${ALL_CLUBS.length} clubs`;
+
       grid.innerHTML = LEAGUES_META.map((item, idx) => {
         const hasMatch = !q || item.country.toLowerCase().includes(q) || item.league.toLowerCase().includes(q) || item.clubs.some(c => c.toLowerCase().includes(q) || (CLUB_STARS_MAP[c] || []).join(' ').toLowerCase().includes(q));
         const isSelected = idx === state.selectedLeagueIndex;
@@ -411,7 +552,7 @@
       if (state.history.length === 0) {
         container.innerHTML = `
           <div class="col-span-full text-center py-8 text-sm text-slate-500 border border-dashed border-white/10 rounded-2xl">
-            Aucun duel disputé pour le moment. Choisissez vos 2 pronostics et lancez le duel (max 2 lancements) !
+            Aucun duel disputé pour le moment. Choisissez vos pronostics et lancez le duel (max 2 lancements) !
           </div>
         `;
         return;
@@ -433,11 +574,12 @@
             </div>
           </div>
           <div class="text-[11px] text-amber-300 font-semibold">
-            ★ Pronos : ${item.pred1Label} • ${item.pred2}
+            ★ Pronos : ${item.pronoSummary}
           </div>
-          <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1.5 border-t border-white/5">
-            <span>🎯 Tirs cadrés : <strong class="text-slate-200">${item.stats.shots1} - ${item.stats.shots2}</strong></span>
-            <span>🚩 Corners : <strong class="text-slate-200">${item.stats.corners1} - ${item.stats.corners2}</strong></span>
+          <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-400 pt-1.5 border-t border-white/5 text-center">
+            <span>🚩 <strong class="text-slate-200">${item.stats.corners1} - ${item.stats.corners2}</strong></span>
+            <span>🎯 <strong class="text-slate-200">${item.stats.shots1} - ${item.stats.shots2}</strong></span>
+            <span>🟨 <strong class="text-amber-300">${item.stats.cards1} - ${item.stats.cards2}</strong></span>
           </div>
         </div>
       `).join('');
@@ -473,21 +615,31 @@
       state.launchesByDuel[key] = used + 1;
       updateLaunchUI();
 
-      const pred1Select = document.getElementById('pred1Select');
-      const pred1Code = pred1Select.value;
-      const pred1Label = pred1Select.options[pred1Select.selectedIndex].text;
+      const pred1 = document.getElementById('pred1Select').value;
       const pred2 = document.getElementById('pred2Select').value;
+      const customText = document.getElementById('customPronoInput').value.trim();
+
+      const chosenParts = [];
+      if (pred1 && !pred1.startsWith('Aucun')) chosenParts.push(pred1);
+      if (pred2 && !pred2.startsWith('Aucun')) chosenParts.push(pred2);
+      if (customText) chosenParts.push(customText);
+      const pronoSummary = chosenParts.length > 0 ? chosenParts.join(' • ') : 'Libre (sans contrainte)';
 
       const statusEl = document.getElementById('duelStatus');
+      const liveLabel = document.getElementById('duelLiveLabel');
       const btn = document.getElementById('launchDuelBtn');
       btn.disabled = true;
+      syncDuelScoreboardNames();
+
       let sec = 3;
       statusEl.textContent = `⏳ Simulation (${state.launchesByDuel[key]}/${MAX_LAUNCHES_PER_DUEL})... ${sec}s`;
+      liveLabel.textContent = `En cours (${sec}s)`;
 
       const timer = setInterval(() => {
         sec -= 1;
         if (sec > 0) {
           statusEl.textContent = `⏳ Simulation (${state.launchesByDuel[key]}/${MAX_LAUNCHES_PER_DUEL})... ${sec}s`;
+          liveLabel.textContent = `En cours (${sec}s)`;
         } else {
           clearInterval(timer);
           const r1 = getClubRating(state.club1);
@@ -495,25 +647,33 @@
           const s1 = Math.max(0, Math.round(Math.random() * 3 + (r1 - r2) * 0.08));
           const s2 = Math.max(0, Math.round(Math.random() * 3 + (r2 - r1) * 0.08));
           const outcome = s1 > s2 ? 'home' : (s2 > s1 ? 'away' : 'draw');
-          const duelRecord = {
+          const stats = {
+            corners1: 2 + Math.floor(Math.random() * 8),
+            corners2: 2 + Math.floor(Math.random() * 8),
+            shots1: Math.max(s1 + 1, 2 + Math.floor(Math.random() * 7)),
+            shots2: Math.max(s2 + 1, 2 + Math.floor(Math.random() * 7)),
+            cards1: Math.floor(Math.random() * 4),
+            cards2: Math.floor(Math.random() * 4)
+          };
+
+          document.getElementById('scoreBoardValue').textContent = `${s1} - ${s2}`;
+          document.getElementById('statCorners').textContent = `${stats.corners1} - ${stats.corners2}`;
+          document.getElementById('statShots').textContent = `${stats.shots1} - ${stats.shots2}`;
+          document.getElementById('statCards').textContent = `${stats.cards1} - ${stats.cards2}`;
+          liveLabel.textContent = 'Terminé';
+
+          state.history.unshift({
             c1: state.club1,
             c2: state.club2,
             s1,
             s2,
             outcome,
-            pred1Code,
-            pred1Label,
-            pred2,
-            stats: {
-              shots1: Math.max(s1 + 1, 2 + Math.floor(Math.random() * 7)),
-              shots2: Math.max(s2 + 1, 2 + Math.floor(Math.random() * 7)),
-              corners1: 2 + Math.floor(Math.random() * 8),
-              corners2: 2 + Math.floor(Math.random() * 8)
-            }
-          };
-          state.history.unshift(duelRecord);
+            pronoSummary,
+            stats
+          });
           renderHistory();
-          statusEl.textContent = `✅ ${state.club1} ${s1} - ${s2} ${state.club2} (${pred2})`;
+
+          statusEl.textContent = `✅ ${state.club1} ${s1} - ${s2} ${state.club2} • ${pronoSummary}`;
           showToast(`${state.club1} ${s1} - ${s2} ${state.club2}`, '⚽');
           updateLaunchUI();
         }
