@@ -1,0 +1,17 @@
+{
+  "name": "LAVERO PREDICTOR",
+  "short_name": "LAVERO",
+  "description": "Prédictions de football et duels épiques — Saison 2026-2027",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070b17",
+  "theme_color": "#070b17",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./1795600023411.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
