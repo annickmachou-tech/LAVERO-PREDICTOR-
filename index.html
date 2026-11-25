@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+ <meta name="theme-color" content="#070b17" />
+<link rel="manifest" href="./manifest.json" />
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LAVERO PREDICTOR — Saison 2026-2027</title>
@@ -956,5 +959,12 @@
         .catch(() => {});
     })();
   </script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+</script>
+
 </body>
 </html>
